@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Garage3.Migrations
 {
     /// <inheritdoc />
@@ -115,6 +117,44 @@ namespace Garage3.Migrations
                         principalTable: "Vehicles",
                         principalColumn: "VehicleID",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Members",
+                columns: new[] { "MemberID", "Age", "FirstName", "LastName", "PersonalNumber" },
+                values: new object[,]
+                {
+                    { 1, 73, "Alice", "Johnson", "19501230-1234" },
+                    { 2, 43, "Bob", "Smith", "19800216-2345" },
+                    { 3, 28, "Carol", "Davis", "19950721-3456" },
+                    { 4, 60, "David", "Martinez", "19631005-4567" },
+                    { 5, 46, "Eve", "Garcia", "19780819-5678" },
+                    { 6, 22, "Frank", "Lee", "20011212-6789" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "VehicleTypes",
+                columns: new[] { "VehicleTypeID", "TypeName" },
+                values: new object[,]
+                {
+                    { 1, "Car" },
+                    { 2, "Truck" },
+                    { 3, "Motorcycle" },
+                    { 4, "Bus" },
+                    { 5, "Airplane" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Vehicles",
+                columns: new[] { "VehicleID", "Brand", "Color", "Model", "NumberOfWheels", "OwnerID", "RegistrationNumber", "VehicleTypeID" },
+                values: new object[,]
+                {
+                    { 1, "Toyota", "Blue", "Corolla", 4, 1, "ABC123", 1 },
+                    { 2, "Honda", "Red", "Civic", 4, 2, "XYZ789", 1 },
+                    { 3, "Ford", "Green", "Fiesta", 4, 3, "DEF456", 1 },
+                    { 4, "Volvo", "Black", "V70", 4, 4, "GHI789", 1 },
+                    { 5, "Saab", "White", "900", 4, 5, "JKL012", 1 },
+                    { 6, "Volkswagen", "Silver", "Golf", 4, 6, "MNO345", 1 }
                 });
 
             migrationBuilder.CreateIndex(

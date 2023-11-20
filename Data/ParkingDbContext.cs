@@ -53,6 +53,14 @@ namespace Garage3.Data
                 .Property(v => v.NumberOfWheels)
                 .IsRequired();
 
+            // VehicleType configurations
+            modelBuilder.Entity<VehicleType>().HasData(
+                new VehicleType { VehicleTypeID = 1, TypeName = "Car" },
+                new VehicleType { VehicleTypeID = 2, TypeName = "Truck" },
+                new VehicleType { VehicleTypeID = 3, TypeName = "Motorcycle" },
+                new VehicleType { VehicleTypeID = 4, TypeName = "Bus" },
+                new VehicleType { VehicleTypeID = 5, TypeName = "Airplane" });
+
             // Relationships
             modelBuilder.Entity<Member>()
                 .HasOne(m => m.Account)
@@ -93,17 +101,27 @@ namespace Garage3.Data
 
             // Seed Data for VehicleType
             modelBuilder.Entity<Vehicle>().HasData(
-                new Vehicle { VehicleID = 1, OwnerID = 1, RegistrationNumber = "ABC123", Brand = "Toyota", Model = "Corolla", Color = "Blue", NumberOfWheels = 4 },
-                new Vehicle { VehicleID = 2, OwnerID = 2, RegistrationNumber = "XYZ789", Brand = "Honda", Model = "Civic", Color = "Red", NumberOfWheels = 4 },
-                new Vehicle { VehicleID = 3, OwnerID = 3, RegistrationNumber = "DEF456", Brand = "Ford", Model = "Fiesta", Color = "Green", NumberOfWheels = 4 },
-                new Vehicle { VehicleID = 4, OwnerID = 4, RegistrationNumber = "GHI789", Brand = "Volvo", Model = "V70", Color = "Black", NumberOfWheels = 4 },
-                new Vehicle { VehicleID = 5, OwnerID = 5, RegistrationNumber = "JKL012", Brand = "Saab", Model = "900", Color = "White", NumberOfWheels = 4 },
-                new Vehicle { VehicleID = 6, OwnerID = 6, RegistrationNumber = "MNO345", Brand = "Volkswagen", Model = "Golf", Color = "Silver", NumberOfWheels = 4 }
+                new Vehicle { VehicleID = 1, OwnerID = 1, RegistrationNumber = "ABC123", Brand = "Toyota", Model = "Corolla", Color = "Blue", NumberOfWheels = 4, VehicleTypeID = 1 },
+                new Vehicle { VehicleID = 2, OwnerID = 2, RegistrationNumber = "XYZ789", Brand = "Honda", Model = "Civic", Color = "Red", NumberOfWheels = 4, VehicleTypeID = 1 },
+                new Vehicle { VehicleID = 3, OwnerID = 3, RegistrationNumber = "DEF456", Brand = "Ford", Model = "Fiesta", Color = "Green", NumberOfWheels = 4, VehicleTypeID = 1 },
+                new Vehicle { VehicleID = 4, OwnerID = 4, RegistrationNumber = "GHI789", Brand = "Volvo", Model = "V70", Color = "Black", NumberOfWheels = 4, VehicleTypeID = 1 },
+                new Vehicle { VehicleID = 5, OwnerID = 5, RegistrationNumber = "JKL012", Brand = "Saab", Model = "900", Color = "White", NumberOfWheels = 4, VehicleTypeID = 1 },
+                new Vehicle { VehicleID = 6, OwnerID = 6, RegistrationNumber = "MNO345", Brand = "Volkswagen", Model = "Golf", Color = "Silver", NumberOfWheels = 4, VehicleTypeID = 1 }
+                );
+
+            // Seed Data for Accounts
+            modelBuilder.Entity<Account>().HasData(
+                new Account { AccountID = 1, MemberID = 1 },
+                new Account { AccountID = 2, MemberID = 2 },
+                new Account { AccountID = 3, MemberID = 3 },
+                new Account { AccountID = 4, MemberID = 4 },
+                new Account { AccountID = 5, MemberID = 5 },
+                new Account { AccountID = 6, MemberID = 6 }
                 );
 
 
             // Call base method
-        base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

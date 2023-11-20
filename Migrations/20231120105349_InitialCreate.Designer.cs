@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(ParkingDbContext))]
-    [Migration("20231120101644_InitialCreate")]
+    [Migration("20231120105349_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -73,6 +73,56 @@ namespace Garage3.Migrations
                     b.HasKey("MemberID");
 
                     b.ToTable("Members");
+
+                    b.HasData(
+                        new
+                        {
+                            MemberID = 1,
+                            Age = 73,
+                            FirstName = "Alice",
+                            LastName = "Johnson",
+                            PersonalNumber = "19501230-1234"
+                        },
+                        new
+                        {
+                            MemberID = 2,
+                            Age = 43,
+                            FirstName = "Bob",
+                            LastName = "Smith",
+                            PersonalNumber = "19800216-2345"
+                        },
+                        new
+                        {
+                            MemberID = 3,
+                            Age = 28,
+                            FirstName = "Carol",
+                            LastName = "Davis",
+                            PersonalNumber = "19950721-3456"
+                        },
+                        new
+                        {
+                            MemberID = 4,
+                            Age = 60,
+                            FirstName = "David",
+                            LastName = "Martinez",
+                            PersonalNumber = "19631005-4567"
+                        },
+                        new
+                        {
+                            MemberID = 5,
+                            Age = 46,
+                            FirstName = "Eve",
+                            LastName = "Garcia",
+                            PersonalNumber = "19780819-5678"
+                        },
+                        new
+                        {
+                            MemberID = 6,
+                            Age = 22,
+                            FirstName = "Frank",
+                            LastName = "Lee",
+                            PersonalNumber = "20011212-6789"
+                        });
                 });
 
             modelBuilder.Entity("Garage3.Models.Entities.ParkingRecord", b =>
@@ -143,6 +193,74 @@ namespace Garage3.Migrations
                     b.HasIndex("VehicleTypeID");
 
                     b.ToTable("Vehicles");
+
+                    b.HasData(
+                        new
+                        {
+                            VehicleID = 1,
+                            Brand = "Toyota",
+                            Color = "Blue",
+                            Model = "Corolla",
+                            NumberOfWheels = 4,
+                            OwnerID = 1,
+                            RegistrationNumber = "ABC123",
+                            VehicleTypeID = 1
+                        },
+                        new
+                        {
+                            VehicleID = 2,
+                            Brand = "Honda",
+                            Color = "Red",
+                            Model = "Civic",
+                            NumberOfWheels = 4,
+                            OwnerID = 2,
+                            RegistrationNumber = "XYZ789",
+                            VehicleTypeID = 1
+                        },
+                        new
+                        {
+                            VehicleID = 3,
+                            Brand = "Ford",
+                            Color = "Green",
+                            Model = "Fiesta",
+                            NumberOfWheels = 4,
+                            OwnerID = 3,
+                            RegistrationNumber = "DEF456",
+                            VehicleTypeID = 1
+                        },
+                        new
+                        {
+                            VehicleID = 4,
+                            Brand = "Volvo",
+                            Color = "Black",
+                            Model = "V70",
+                            NumberOfWheels = 4,
+                            OwnerID = 4,
+                            RegistrationNumber = "GHI789",
+                            VehicleTypeID = 1
+                        },
+                        new
+                        {
+                            VehicleID = 5,
+                            Brand = "Saab",
+                            Color = "White",
+                            Model = "900",
+                            NumberOfWheels = 4,
+                            OwnerID = 5,
+                            RegistrationNumber = "JKL012",
+                            VehicleTypeID = 1
+                        },
+                        new
+                        {
+                            VehicleID = 6,
+                            Brand = "Volkswagen",
+                            Color = "Silver",
+                            Model = "Golf",
+                            NumberOfWheels = 4,
+                            OwnerID = 6,
+                            RegistrationNumber = "MNO345",
+                            VehicleTypeID = 1
+                        });
                 });
 
             modelBuilder.Entity("Garage3.Models.Entities.VehicleType", b =>
@@ -160,6 +278,33 @@ namespace Garage3.Migrations
                     b.HasKey("VehicleTypeID");
 
                     b.ToTable("VehicleTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            VehicleTypeID = 1,
+                            TypeName = "Car"
+                        },
+                        new
+                        {
+                            VehicleTypeID = 2,
+                            TypeName = "Truck"
+                        },
+                        new
+                        {
+                            VehicleTypeID = 3,
+                            TypeName = "Motorcycle"
+                        },
+                        new
+                        {
+                            VehicleTypeID = 4,
+                            TypeName = "Bus"
+                        },
+                        new
+                        {
+                            VehicleTypeID = 5,
+                            TypeName = "Airplane"
+                        });
                 });
 
             modelBuilder.Entity("Garage3.Models.Entities.Account", b =>
