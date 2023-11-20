@@ -81,8 +81,29 @@ namespace Garage3.Data
                 .HasForeignKey(p => p.MemberID)
                 .OnDelete(DeleteBehavior.Restrict); // Adjusted to prevent cascade delete issue
 
+            // Adding Seed Data manually typed in
+            modelBuilder.Entity<Member>().HasData(
+                new Member { MemberID = 1, PersonalNumber = "19501230-1234", FirstName = "Alice", LastName = "Johnson", Age = 73 },
+                new Member { MemberID = 2, PersonalNumber = "19800216-2345", FirstName = "Bob", LastName = "Smith", Age = 43 },
+                new Member { MemberID = 3, PersonalNumber = "19950721-3456", FirstName = "Carol", LastName = "Davis", Age = 28 },
+                new Member { MemberID = 4, PersonalNumber = "19631005-4567", FirstName = "David", LastName = "Martinez", Age = 60 },
+                new Member { MemberID = 5, PersonalNumber = "19780819-5678", FirstName = "Eve", LastName = "Garcia", Age = 46 },
+                new Member { MemberID = 6, PersonalNumber = "20011212-6789", FirstName = "Frank", LastName = "Lee", Age = 22 }
+                );
+
+            // Seed Data for VehicleType
+            modelBuilder.Entity<Vehicle>().HasData(
+                new Vehicle { VehicleID = 1, OwnerID = 1, RegistrationNumber = "ABC123", Brand = "Toyota", Model = "Corolla", Color = "Blue", NumberOfWheels = 4 },
+                new Vehicle { VehicleID = 2, OwnerID = 2, RegistrationNumber = "XYZ789", Brand = "Honda", Model = "Civic", Color = "Red", NumberOfWheels = 4 },
+                new Vehicle { VehicleID = 3, OwnerID = 3, RegistrationNumber = "DEF456", Brand = "Ford", Model = "Fiesta", Color = "Green", NumberOfWheels = 4 },
+                new Vehicle { VehicleID = 4, OwnerID = 4, RegistrationNumber = "GHI789", Brand = "Volvo", Model = "V70", Color = "Black", NumberOfWheels = 4 },
+                new Vehicle { VehicleID = 5, OwnerID = 5, RegistrationNumber = "JKL012", Brand = "Saab", Model = "900", Color = "White", NumberOfWheels = 4 },
+                new Vehicle { VehicleID = 6, OwnerID = 6, RegistrationNumber = "MNO345", Brand = "Volkswagen", Model = "Golf", Color = "Silver", NumberOfWheels = 4 }
+                );
+
+
             // Call base method
-            base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(modelBuilder);
         }
     }
 }
