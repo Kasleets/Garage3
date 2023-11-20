@@ -7,6 +7,10 @@
         public int OwnerID { get; set; }
         public string RegistrationNumber { get; set; }
         public int VehicleTypeID { get; set; }
+        public string Color { get; set; }
+        public string Brand { get; set; }
+        public string Model { get; set; }
+        public int NumberOfWheels { get; set; }
 
         // Navigation properties
         public virtual Member Owner { get; set; }
