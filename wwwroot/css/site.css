@@ -1,22 +1,129 @@
-html {
-  font-size: 14px;
-}
+/* Site CSS */
 
+/* Media queries for devices with a minimum width of 768px */
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: #1f2b35; /* Dark background color */
+    margin-bottom: 60px;
+    font-size: 20px;
+}
+
+div {
+    color: #fff; /* Text color for all divs */
+}
+
+/* General HTML element styles */
+html {
+    position: relative;
+    min-height: 100%;
+    font-size: 22px;
+}
+
+h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: calc(1.5rem + 2.5vw) !important; 
+}
+
+p {
+    font-family: Candara;
+    font-size: 18px;
+    color: #fff; /* Text color for paragraphs */
+}
+
+/* Styling for links */
+a {
+    color: #fb8604; /* Link color */
+}
+
+    a:hover {
+        color: #1258DC; /* Change link color on hover */
+    }
+
+/* Styling for rows */
+.row {
+    background-color: #162029;
+    border-radius: 10px; /* Adjust border radius value as desired */
+}
+
+    .row input {
+        background-color: white; /* Prevent input fields from inheriting opacity */
+    }
+
+/* Styling for tables */
+.table {
+    color: #fff; /* Text color for tables */
+}
+
+    .table > :not(:last-child) > :last-child > * {
+        border-bottom-color: currentColor;
+        color: #F7E7D4;
+    }
+
+/* Styling for table cells */
+td {
+    color: #ffffff; /* Text color for table cells */
+}
+
+/* Styling for buttons */
+.btn-primary {
+    color: #fff; /* Text color for primary buttons */
+    background-color: #144EB8 !important; /* Background color for primary buttons */
+    border-color: #616161 !important; /* Border color for primary buttons */
+    margin-top: 5px;
+}
+
+.btn-secondary {
+    color: #fff; /* Text color for secondary buttons */
+    background-color: #1258DC !important; /* Background color for secondary buttons */
+    border-color: #616161 !important; /* Border color for secondary buttons */
+    margin-top: 5px;
+}
+
+/* Styling for button hover states */
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+    color: #fff8f0 !important; /* Change text color on hover */
+    background-color: #616161 !important; /* Change background color on hover */
+}
+
+.bg-white {
+    --bs-bg-opacity: 1;
+    background-color: #162029 !important; /* Change background color for white backgrounds */
+}
+
+/* Custom Table Styles */
+.table {
+    --bs-table-bg: #091834; /* Dark background color for non-striped rows */
+    --bs-table-accent-bg: #36454F; /* Slightly lighter shade for accent */
+    --bs-table-striped-color: #834702; /* Text color for striped rows */
+    --bs-table-striped-bg: #263238; /* First striped row background */
+    --bs-table-active-color: #834702;
+    margin-top: 5px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: white !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/*Garage header logo text*/
+.navbar-light, .navbar-brand {
+    color: white !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    height: 60px; /* Set the height of footer */
 }
