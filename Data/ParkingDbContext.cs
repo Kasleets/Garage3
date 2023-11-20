@@ -14,8 +14,6 @@ namespace Garage3.Data
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<ParkingRecord> ParkingRecords { get; set; }
 
-        // Note: Here you can input any other DbSets for other entities you may have.
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Member configurations
@@ -33,7 +31,7 @@ namespace Garage3.Data
                 .Property(m => m.PersonalNumber)
                 .IsRequired()
                 .HasMaxLength(13);
-            // Note: It is 13 long because after 8 digits there is a dash and then 4 more digits. Need validation in a method.
+            // Note: Personal Number has 13 because there is a dash after 8 digits.
 
             // Vehicle configurations
             modelBuilder.Entity<Vehicle>()
@@ -53,7 +51,7 @@ namespace Garage3.Data
 
             modelBuilder.Entity<Vehicle>()
                 .Property(v => v.NumberOfWheels)
-                .HasAnnotation("Range", new Range(0, 100));
+                .IsRequired();
 
             // Relationships
             modelBuilder.Entity<Member>()
@@ -74,12 +72,14 @@ namespace Garage3.Data
             modelBuilder.Entity<Vehicle>()
                 .HasMany(v => v.ParkingRecords)
                 .WithOne(p => p.Vehicle)
-                .HasForeignKey(p => p.VehicleID);
+                .HasForeignKey(p => p.VehicleID)
+                .OnDelete(DeleteBehavior.Restrict); // Adjusted to prevent cascade delete issue
 
             modelBuilder.Entity<Member>()
                 .HasMany(m => m.ParkingRecords)
                 .WithOne(p => p.Member)
-                .HasForeignKey(p => p.MemberID);
+                .HasForeignKey(p => p.MemberID)
+                .OnDelete(DeleteBehavior.Restrict); // Adjusted to prevent cascade delete issue
 
             // Call base method
             base.OnModelCreating(modelBuilder);

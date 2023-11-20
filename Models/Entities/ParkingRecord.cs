@@ -2,7 +2,7 @@
 {
     public class ParkingRecord
     {
-        public int RecordID { get; set; }
+        public int ParkingRecordID { get; set; }
         public int VehicleID { get; set; }
         public DateTime ParkTime { get; set; }
         public int MemberID { get; set; }
