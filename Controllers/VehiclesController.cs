@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Garage3.Data;
 using Garage3.Models.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Garage3.ViewModels;
 
 namespace Garage3.Controllers
 {
@@ -59,12 +60,20 @@ namespace Garage3.Controllers
             /*commented out few lines here to avoid error as we dont have VehicleViewModel at the time 
               of creating VehiclesController, so kindly remove those comments 
              while creating views and viewmodel and do changes as per your needs*/
+            
 
-            var viewModel = vehicles.Select(v => new /*VehicleViewModel*/
+            var viewModel = vehicles.Select(v => new OverviewModel/*VehicleViewModel*/
             {
-                VehicleID = v.Vehicle.VehicleID,
+                // get properties from view model
+                OwnerFullName = $"{v.Vehicle.Owner.FirstName} {v.Vehicle.Owner.LastName}",
+            
+                VehicleType = v.Vehicle.VehicleType.TypeName,
                 RegistrationNumber = v.Vehicle.RegistrationNumber,
+                ParkTime = v.ParkTime,
                 //ArrivalTime = v.ParkTime ?? DateTime.MinValue   // Use DateTime.MinValue if ParkTime is null
+
+                MembershipType = v.Vehicle.Owner.MembershipType
+             
             });
 
             var vehiclesList = await viewModel.ToListAsync();

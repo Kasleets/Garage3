@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Garage3.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class UpdateData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -100,6 +100,7 @@ namespace Garage3.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VehicleID = table.Column<int>(type: "int", nullable: false),
                     ParkTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CheckOutTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MemberID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -142,6 +143,19 @@ namespace Garage3.Migrations
                     { 3, "Motorcycle" },
                     { 4, "Bus" },
                     { 5, "Airplane" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Accounts",
+                columns: new[] { "AccountID", "MemberID" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 },
+                    { 3, 3 },
+                    { 4, 4 },
+                    { 5, 5 },
+                    { 6, 6 }
                 });
 
             migrationBuilder.InsertData(

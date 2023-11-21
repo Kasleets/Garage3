@@ -94,6 +94,10 @@ namespace Garage3.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("MembershipType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PersonalNumber")
                         .IsRequired()
                         .HasMaxLength(13)
@@ -110,6 +114,7 @@ namespace Garage3.Migrations
                             Age = 73,
                             FirstName = "Alice",
                             LastName = "Johnson",
+                            MembershipType = "Regular",
                             PersonalNumber = "19501230-1234"
                         },
                         new
@@ -118,6 +123,7 @@ namespace Garage3.Migrations
                             Age = 43,
                             FirstName = "Bob",
                             LastName = "Smith",
+                            MembershipType = "Gold",
                             PersonalNumber = "19800216-2345"
                         },
                         new
@@ -126,6 +132,7 @@ namespace Garage3.Migrations
                             Age = 28,
                             FirstName = "Carol",
                             LastName = "Davis",
+                            MembershipType = "Silver",
                             PersonalNumber = "19950721-3456"
                         },
                         new
@@ -134,6 +141,7 @@ namespace Garage3.Migrations
                             Age = 60,
                             FirstName = "David",
                             LastName = "Martinez",
+                            MembershipType = "Regular",
                             PersonalNumber = "19631005-4567"
                         },
                         new
@@ -142,6 +150,7 @@ namespace Garage3.Migrations
                             Age = 46,
                             FirstName = "Eve",
                             LastName = "Garcia",
+                            MembershipType = "VIP",
                             PersonalNumber = "19780819-5678"
                         },
                         new
@@ -150,6 +159,7 @@ namespace Garage3.Migrations
                             Age = 22,
                             FirstName = "Frank",
                             LastName = "Lee",
+                            MembershipType = "VIP",
                             PersonalNumber = "20011212-6789"
                         });
                 });
@@ -390,8 +400,7 @@ namespace Garage3.Migrations
 
             modelBuilder.Entity("Garage3.Models.Entities.Member", b =>
                 {
-                    b.Navigation("Account")
-                        .IsRequired();
+                    b.Navigation("Account");
 
                     b.Navigation("ParkingRecords");
 

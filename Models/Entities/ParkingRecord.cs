@@ -2,6 +2,7 @@
 {
     public class ParkingRecord
     {
+#nullable disable
         public int ParkingRecordID { get; set; }
         public int VehicleID { get; set; }
         public DateTime ParkTime { get; set; }

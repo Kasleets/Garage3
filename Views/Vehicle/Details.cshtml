@@ -1,0 +1,32 @@
+﻿@model DetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Vehicle Details</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>Registration Number:</dt>
+        <dd>@Model.Vehicle.RegistrationNumber</dd>
+        <dt>Arrival Time:</dt>
+        <dd>@Model.ParkingRecord.ParkTime</dd>
+        <dt>Vehicle Type:</dt>
+        <dd>@Model.Vehicle.VehicleType</dd>
+        <dt>Color:</dt>
+        <dd>@Model.Vehicle.Color</dd>
+        <dt>Brand:</dt>
+        <dd>@Model.Vehicle.Brand</dd>
+        <dt>Model:</dt>
+        <dd>@Model.Vehicle.Model</dd>
+        <dt>Number of Wheels:</dt>
+        <dd>@Model.Vehicle.NumberOfWheels</dd>
+        <dt>Total Parking time</dt>
+        <dd>@Model.GetFormattedParkingTime(Model.ParkingRecord)</dd>
+    </dl>
+</div>
+
+<p>
+    <a asp-action="Overview">Back to Overview</a>
+</p>

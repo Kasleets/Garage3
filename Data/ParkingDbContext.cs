@@ -89,14 +89,19 @@ namespace Garage3.Data
                 .HasForeignKey(p => p.MemberID)
                 .OnDelete(DeleteBehavior.Restrict); // Adjusted to prevent cascade delete issue
 
+            // Convert the enum to string by Xiahui
+            modelBuilder.Entity<Member>()
+            .Property(m => m.MembershipType)
+            .HasConversion<string>(); 
+
             // Adding Seed Data manually typed in
             modelBuilder.Entity<Member>().HasData(
-                new Member { MemberID = 1, PersonalNumber = "19501230-1234", FirstName = "Alice", LastName = "Johnson", Age = 73 },
-                new Member { MemberID = 2, PersonalNumber = "19800216-2345", FirstName = "Bob", LastName = "Smith", Age = 43 },
-                new Member { MemberID = 3, PersonalNumber = "19950721-3456", FirstName = "Carol", LastName = "Davis", Age = 28 },
-                new Member { MemberID = 4, PersonalNumber = "19631005-4567", FirstName = "David", LastName = "Martinez", Age = 60 },
-                new Member { MemberID = 5, PersonalNumber = "19780819-5678", FirstName = "Eve", LastName = "Garcia", Age = 46 },
-                new Member { MemberID = 6, PersonalNumber = "20011212-6789", FirstName = "Frank", LastName = "Lee", Age = 22 }
+                new Member { MemberID = 1, PersonalNumber = "19501230-1234", FirstName = "Alice", LastName = "Johnson", Age = 73, MembershipType = MembershipType.Regular },
+                new Member { MemberID = 2, PersonalNumber = "19800216-2345", FirstName = "Bob", LastName = "Smith", Age = 43, MembershipType = MembershipType.Gold },
+                new Member { MemberID = 3, PersonalNumber = "19950721-3456", FirstName = "Carol", LastName = "Davis", Age = 28, MembershipType = MembershipType.Silver },
+                new Member { MemberID = 4, PersonalNumber = "19631005-4567", FirstName = "David", LastName = "Martinez", Age = 60, MembershipType = MembershipType.Regular },
+                new Member { MemberID = 5, PersonalNumber = "19780819-5678", FirstName = "Eve", LastName = "Garcia", Age = 46, MembershipType = MembershipType.VIP },
+                new Member { MemberID = 6, PersonalNumber = "20011212-6789", FirstName = "Frank", LastName = "Lee", Age = 22, MembershipType = MembershipType.VIP }
                 );
 
             // Seed Data for VehicleType

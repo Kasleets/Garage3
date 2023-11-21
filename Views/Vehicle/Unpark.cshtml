@@ -1,0 +1,16 @@
+﻿@* ﻿@model Garage3.ViewModels.UnparkViewModel
+
+@{
+    ViewData["Title"] = "Pickup Vehicle";
+}
+
+<h1>Pickup Vehicle</h1>
+
+<form asp-action="Unpark" asp-controller="Vehicle" method="post">
+    <div class="form-group">
+        <label asp-for="RegistrationNumber">Registration Number</label>
+        <input asp-for="RegistrationNumber" class="form-control" oninput="this.value = this.value.toUpperCase()" />
+        <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Pickup</button>
+</form> *@

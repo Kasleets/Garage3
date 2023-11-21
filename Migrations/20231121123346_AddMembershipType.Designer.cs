@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(ParkingDbContext))]
-    [Migration("20231120110447_AddAccountsSeedData")]
-    partial class AddAccountsSeedData
+    [Migration("20231121123346_AddMembershipType")]
+    partial class AddMembershipType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,6 +97,9 @@ namespace Garage3.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("MembershipType")
+                        .HasColumnType("int");
+
                     b.Property<string>("PersonalNumber")
                         .IsRequired()
                         .HasMaxLength(13)
@@ -113,6 +116,7 @@ namespace Garage3.Migrations
                             Age = 73,
                             FirstName = "Alice",
                             LastName = "Johnson",
+                            MembershipType = 0,
                             PersonalNumber = "19501230-1234"
                         },
                         new
@@ -121,6 +125,7 @@ namespace Garage3.Migrations
                             Age = 43,
                             FirstName = "Bob",
                             LastName = "Smith",
+                            MembershipType = 2,
                             PersonalNumber = "19800216-2345"
                         },
                         new
@@ -129,6 +134,7 @@ namespace Garage3.Migrations
                             Age = 28,
                             FirstName = "Carol",
                             LastName = "Davis",
+                            MembershipType = 1,
                             PersonalNumber = "19950721-3456"
                         },
                         new
@@ -137,6 +143,7 @@ namespace Garage3.Migrations
                             Age = 60,
                             FirstName = "David",
                             LastName = "Martinez",
+                            MembershipType = 0,
                             PersonalNumber = "19631005-4567"
                         },
                         new
@@ -145,6 +152,7 @@ namespace Garage3.Migrations
                             Age = 46,
                             FirstName = "Eve",
                             LastName = "Garcia",
+                            MembershipType = 3,
                             PersonalNumber = "19780819-5678"
                         },
                         new
@@ -153,6 +161,7 @@ namespace Garage3.Migrations
                             Age = 22,
                             FirstName = "Frank",
                             LastName = "Lee",
+                            MembershipType = 3,
                             PersonalNumber = "20011212-6789"
                         });
                 });
@@ -164,6 +173,9 @@ namespace Garage3.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParkingRecordID"));
+
+                    b.Property<DateTime?>("CheckOutTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MemberID")
                         .HasColumnType("int");
@@ -390,8 +402,7 @@ namespace Garage3.Migrations
 
             modelBuilder.Entity("Garage3.Models.Entities.Member", b =>
                 {
-                    b.Navigation("Account")
-                        .IsRequired();
+                    b.Navigation("Account");
 
                     b.Navigation("ParkingRecords");
 

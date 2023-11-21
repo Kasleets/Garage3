@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(ParkingDbContext))]
-    [Migration("20231121071214_checkoutTime")]
-    partial class checkoutTime
+    [Migration("20231121104826_UpdateData")]
+    partial class UpdateData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

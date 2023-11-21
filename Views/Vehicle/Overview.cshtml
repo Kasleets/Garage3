@@ -1,0 +1,41 @@
+﻿@model List<OverviewModel>
+
+<h2>Vehicle Overview</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Owner</th>
+            <th>Membership</th>
+            <th>Vehicle Type</th>
+            <th>Registration Number</th>
+            <th>Park Time</th>
+            <th>
+                Details
+            </th>
+            <th>
+                Edit
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehicle in Model)
+        {
+            <tr>
+                <td>@vehicle.OwnerFullName</td>
+                <td>@vehicle.MembershipType</td>
+                <td>@vehicle.VehicleType</td>
+                
+                <td>@vehicle.RegistrationNumber</td>
+                <td>@vehicle.ParkTime</td>
+
+                <td>
+                    <a asp-action="Details" asp-controller="Vehicle" asp-route-id="@vehicle.VehicleID">Details</a>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Vehicle" asp-route-id="@vehicle.VehicleID">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
