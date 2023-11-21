@@ -1,3 +1,6 @@
+using Garage3.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Garage3
 {
     // Initial commit to Github Kasleet
@@ -9,6 +12,11 @@ namespace Garage3
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Add DbContext Kasleet
+            builder.Services.AddDbContext<ParkingDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             var app = builder.Build();
 
