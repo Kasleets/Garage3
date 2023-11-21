@@ -107,20 +107,33 @@ td {
     margin-top: 5px;
 }
 
-.navbar-light .navbar-nav .nav-link {
+.navbar-light, .navbar-nav .nav-link {
     color: white !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 /*Garage header logo text*/
-.navbar-light, .navbar-brand {
+.navbar-light {
     color: white !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
+.navbar-brand {
+    /*background-image: url("./images/garagdoor_logo.png");*/
+    color: white !important;
+}
 
-.footer {
+/*Logo image*/
+img {
+    width: 80px;
+    height: auto;
+    position: relative;
+
+    left: -20px;
+}
+
+    .footer {
     position: absolute;
     bottom: 0;
     width: 100%;

@@ -162,6 +162,9 @@ namespace Garage3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParkingRecordID"));
 
+                    b.Property<DateTime?>("CheckOutTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MemberID")
                         .HasColumnType("int");
 
