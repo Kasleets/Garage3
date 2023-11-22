@@ -4,6 +4,7 @@
 // Write your JavaScript code.
 
 // Note: Successfull messages are displayed using SweetAlert2
+
 function addVehicleSuccess() {
     Swal.fire({
         title: 'Success!',
@@ -146,3 +147,38 @@ function vehicleNotFound() {
     });
 }
 
+// Note: Login form https://sweetalert2.github.io/recipe-gallery/login-form.html
+// Todo: bind to relevant inputs from Views
+
+type LoginFormResult = {
+    username: string
+    password: string
+}
+
+let usernameInput: HTMLInputElement
+let passwordInput: HTMLInputElement
+
+Swal.fire < LoginFormResult > ({
+    title: 'Login Form',
+    html: `
+    <input type="text" id="username" class="swal2-input" placeholder="Username">
+    <input type="password" id="password" class="swal2-input" placeholder="Password">
+  `,
+    confirmButtonText: 'Sign in',
+    focusConfirm: false,
+    didOpen: () => {
+        const popup = Swal.getPopup()!
+        usernameInput = popup.querySelector('#username') as HTMLInputElement
+        passwordInput = popup.querySelector('#password') as HTMLInputElement
+        usernameInput.onkeyup = (event) => event.key === 'Enter' && Swal.clickConfirm()
+        passwordInput.onkeyup = (event) => event.key === 'Enter' && Swal.clickConfirm()
+    },
+    preConfirm: () => {
+        const username = usernameInput.value
+        const password = passwordInput.value
+        if (!username || !password) {
+            Swal.showValidationMessage(`Please enter username and password`)
+        }
+        return { username, password }
+    },
+})
