@@ -1,6 +1,7 @@
 ﻿using Garage3.Controllers;
 using Garage3.Data;
 using Garage3.Models.Entities;
+using Garage3.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -28,26 +29,14 @@ namespace Garage3.xUnitTests
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<dynamic>>(viewResult.Model); // Adjusted to 'dynamic'
+            //var model = Assert.IsAssignableFrom<IEnumerable<dynamic>>(viewResult.Model); // Adjusted to 'dynamic'
+            var model = Assert.IsAssignableFrom<IEnumerable<VehicleOverviewViewModel>>(viewResult.Model); // Adjusted to 'VehicleOverviewViewModel'
             Assert.NotNull(model);
             Assert.True(model.Any()); // Check that there are vehicles present in the model
         }
 
 
-        // Implement the SeedVehicles method 
-        private void SeedVehicles(ParkingDbContext context)
-        {
-            // Example:
-            context.Vehicles.Add(new Vehicle { VehicleID = 1, OwnerID = 1, RegistrationNumber = "ABC123", Brand = "Toyota", Model = "Corolla", Color = "Blue", NumberOfWheels = 4, VehicleTypeID = 1 });
-            context.Vehicles.Add(new Vehicle { VehicleID = 2, OwnerID = 2, RegistrationNumber = "XYZ789", Brand = "Honda", Model = "Civic", Color = "Red", NumberOfWheels = 4, VehicleTypeID = 1 });
-            context.Vehicles.Add(new Vehicle { VehicleID = 3, OwnerID = 3, RegistrationNumber = "DEF456", Brand = "Ford", Model = "Fiesta", Color = "Green", NumberOfWheels = 4, VehicleTypeID = 1 });
-            context.Vehicles.Add(new Vehicle { VehicleID = 4, OwnerID = 4, RegistrationNumber = "GHI789", Brand = "Volvo", Model = "V70", Color = "Black", NumberOfWheels = 4, VehicleTypeID = 1 });
-            context.Vehicles.Add(new Vehicle { VehicleID = 5, OwnerID = 5, RegistrationNumber = "JKL012", Brand = "Saab", Model = "900", Color = "White", NumberOfWheels = 4, VehicleTypeID = 1 });
-            
-            // Add as many vehicles as needed for your test
 
-            context.SaveChanges();
-        }
 
         [Fact]
         public async Task Add_PostValidVehicle_AddsVehicleToDatabase()

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Garage3.ViewModels.VehicleOverviewViewModel>
+
+<table>
+    <thead>
+        <tr>
+            <th>Registration Number</th>
+            <th>Arrival Time</th>
+            <th>Vehicle Type</th>
+            <th>Parking Duration</th>
+            <th>Owner</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehicle in Model)
+        {
+            <tr>
+                <td>@vehicle.RegistrationNumber</td>
+                <td>@vehicle.ParkTime</td>
+                <td>@vehicle.VehicleType</td>
+                <td>@vehicle.FormattedParkingTime</td>
+                <td>@vehicle.OwnerFullName</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@vehicle.VehicleID">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@vehicle.VehicleID">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -17,63 +17,127 @@ namespace Garage3.Controllers
         }
 
         // GET: Vehicle/Overview
+        #region Old logic keeping as placeholder reference
+        //public async Task<IActionResult> Overview(string sortOrder, string searchString)
+        //{
+        //    // Sorting parameters for the view
+        //    ViewBag.NameSortParam = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+        //    ViewBag.TimeSortParam = sortOrder == "time" ? "time_desc" : "time";
+
+        //    // Query to get vehicles and associated parking records where CheckOutTime is null
+        //    var vehicles = from v in _context.Vehicles
+        //                   join pr in _context.ParkingRecords on v.VehicleID equals pr.VehicleID into parkingRecords
+        //                   from pr in parkingRecords.DefaultIfEmpty()
+        //                   where pr.CheckOutTime == null
+        //                   select new
+        //                   {
+        //                       Vehicle = v,
+        //                       ParkTime = pr.ParkTime
+        //                   };
+
+        //    // Filter by search string
+        //    if (!String.IsNullOrEmpty(searchString))
+        //    {
+        //        vehicles = vehicles.Where(v => v.Vehicle.RegistrationNumber.Contains(searchString));
+        //    }
+
+        //    // Sorting logic based on sortOrder parameter
+        //    switch (sortOrder)
+        //    {
+        //        case "name_desc":
+        //            vehicles = vehicles.OrderByDescending(v => v.Vehicle.RegistrationNumber);
+        //            break;
+        //        case "time":
+        //            vehicles = vehicles.OrderBy(v => v.ParkTime);
+        //            break;
+        //        case "time_desc":
+        //            vehicles = vehicles.OrderByDescending(v => v.ParkTime);
+        //            break;
+        //        default:
+        //            vehicles = vehicles.OrderBy(v => v.Vehicle.RegistrationNumber);
+        //            break;
+        //    }
+
+        //    /*commented out few lines here to avoid error as we dont have VehicleViewModel at the time 
+        //      of creating VehiclesController, so kindly remove those comments 
+        //     while creating views and viewmodel and do changes as per your needs*/
+
+        //    // Todo: Create VehicleViewModel and use it instead of anonymous type
+
+        //    var viewModel = vehicles.Select(v => new /*VehicleViewModel*/
+        //    {
+        //        VehicleID = v.Vehicle.VehicleID,
+        //        RegistrationNumber = v.Vehicle.RegistrationNumber,
+        //        //ArrivalTime = v.ParkTime ?? DateTime.MinValue   // Use DateTime.MinValue if ParkTime is null
+        //    });
+
+        //    var vehiclesList = await viewModel.ToListAsync();
+
+        //    return View("Overview", vehiclesList);
+        //}
+        #endregion
         public async Task<IActionResult> Overview(string sortOrder, string searchString)
         {
-            // Sorting parameters for the view
-            ViewBag.NameSortParam = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewBag.TimeSortParam = sortOrder == "time" ? "time_desc" : "time";
+            // Sorting parameters
+            ViewData["RegistrationSortParm"] = String.IsNullOrEmpty(sortOrder) ? "registration_desc" : "";
+            ViewData["TimeSortParm"] = sortOrder == "time_asc" ? "time_desc" : "time_asc";
 
-            // Query to get vehicles and associated parking records where CheckOutTime is null
-            var vehicles = from v in _context.Vehicles
-                           join pr in _context.ParkingRecords on v.VehicleID equals pr.VehicleID into parkingRecords
-                           from pr in parkingRecords.DefaultIfEmpty()
-                           where pr.CheckOutTime == null
-                           select new
-                           {
-                               Vehicle = v,
-                               ParkTime = pr.ParkTime
-                           };
+            var vehiclesQuery = _context.Vehicles
+                .Include(v => v.Owner) // Include Owner for OwnerFullName
+                .Include(v => v.VehicleType) // Include VehicleType for VehicleType name
+                .Where(v => v.ParkingRecords.Any(pr => pr.CheckOutTime == null))
+                .Select(v => new VehicleOverviewViewModel
+                {
+                    VehicleID = v.VehicleID,
+                    RegistrationNumber = v.RegistrationNumber,
+                    VehicleType = v.VehicleType.TypeName,
+                    OwnerFullName = v.Owner.FirstName + " " + v.Owner.LastName,
+                    ParkTime = v.ParkingRecords.Where(pr => pr.CheckOutTime == null).Max(pr => pr.ParkTime),
+                    FormattedParkingTime = "" // Placeholder, will be calculated later
+                });
 
             // Filter by search string
             if (!String.IsNullOrEmpty(searchString))
             {
-                vehicles = vehicles.Where(v => v.Vehicle.RegistrationNumber.Contains(searchString));
+                vehiclesQuery = vehiclesQuery.Where(v => v.RegistrationNumber.Contains(searchString));
             }
 
-            // Sorting logic based on sortOrder parameter
+            // Apply sorting logic
             switch (sortOrder)
             {
-                case "name_desc":
-                    vehicles = vehicles.OrderByDescending(v => v.Vehicle.RegistrationNumber);
+                case "registration_desc":
+                    vehiclesQuery = vehiclesQuery.OrderByDescending(v => v.RegistrationNumber);
                     break;
-                case "time":
-                    vehicles = vehicles.OrderBy(v => v.ParkTime);
+                case "time_asc":
+                    vehiclesQuery = vehiclesQuery.OrderBy(v => v.ParkTime);
                     break;
                 case "time_desc":
-                    vehicles = vehicles.OrderByDescending(v => v.ParkTime);
+                    vehiclesQuery = vehiclesQuery.OrderByDescending(v => v.ParkTime);
                     break;
                 default:
-                    vehicles = vehicles.OrderBy(v => v.Vehicle.RegistrationNumber);
+                    vehiclesQuery = vehiclesQuery.OrderBy(v => v.RegistrationNumber);
                     break;
             }
 
-            /*commented out few lines here to avoid error as we dont have VehicleViewModel at the time 
-              of creating VehiclesController, so kindly remove those comments 
-             while creating views and viewmodel and do changes as per your needs*/
+            var vehicleList = await vehiclesQuery.ToListAsync();
 
-            // Todo: Create VehicleViewModel and use it instead of anonymous type
-
-            var viewModel = vehicles.Select(v => new /*VehicleViewModel*/
+            // Calculate formatted parking time for each vehicle
+            foreach (var vehicle in vehicleList)
             {
-                VehicleID = v.Vehicle.VehicleID,
-                RegistrationNumber = v.Vehicle.RegistrationNumber,
-                //ArrivalTime = v.ParkTime ?? DateTime.MinValue   // Use DateTime.MinValue if ParkTime is null
-            });
+                vehicle.FormattedParkingTime = GetFormattedParkingTime(vehicle.ParkTime);
+            }
 
-            var vehiclesList = await viewModel.ToListAsync();
-
-            return View("Overview", vehiclesList);
+            return View(vehicleList);
         }
+
+        private string GetFormattedParkingTime(DateTime parkTime)
+        {
+            var parkingDuration = DateTime.Now - parkTime;
+            return parkingDuration.Days > 0
+                ? $"est. {parkingDuration.Days} days"
+                : $"est. {parkingDuration.Hours} hours";
+        }
+
 
 
         // GET: Vehicle/Add
