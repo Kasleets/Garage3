@@ -12,6 +12,9 @@
         // Navigation properties
         public virtual Vehicle Vehicle { get; set; }
         public virtual Member Member { get; set; }
+
+        public ParkingRecord() => ParkTime = DateTime.Now;
+
     }
 
 }
