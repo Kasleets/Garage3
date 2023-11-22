@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Garage3.Data;
 using Garage3.Models.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Garage3.ViewModels;
 
 namespace Garage3.Controllers
 {
@@ -156,6 +157,25 @@ namespace Garage3.Controllers
         }
 
         // GET: Vehicle/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var vehicle = await _context.Vehicles
+        //        .Include(v => v.Owner)
+        //        .Include(v => v.VehicleType)
+        //        .FirstOrDefaultAsync(m => m.VehicleID == id);
+
+        //    if (vehicle == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(vehicle);
+        //}
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -173,8 +193,17 @@ namespace Garage3.Controllers
                 return NotFound();
             }
 
-            return View(vehicle);
+            var viewModel = new VehicleDetailedViewModel
+            {
+                Vehicle = vehicle,
+                VehicleType = vehicle.VehicleType,
+                ParkingRecord = vehicle.ParkingRecords.FirstOrDefault() 
+                                                                        // Populate other properties if needed
+            };
+
+            return View(viewModel);
         }
+
 
         // GET: Vehicle/Delete/5
         public async Task<IActionResult> Delete(int? id)

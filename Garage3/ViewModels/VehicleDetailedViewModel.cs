@@ -5,11 +5,14 @@ namespace Garage3.ViewModels
     public class VehicleDetailedViewModel
     {
 #nullable disable
+        public int VehicleID { get; set; }
         public Vehicle Vehicle { get; set; }
         public VehicleType VehicleType { get; set; }
 
         public ParkingRecord ParkingRecord { get; set; }
 
+        // Navigation property
+        public virtual ICollection<Vehicle> Vehicles { get; set; }
 
 
         public string GetFormattedParkingTime(ParkingRecord vehicle)
