@@ -238,7 +238,7 @@ namespace Garage3.Controllers
 
         private bool IsValidSocialSecurityNumber(string personalNumber)
         {
-            const int validLength = 13;
+            const int validLength = 13;// Remember to Re-execute this 
 
             if (personalNumber.Length != validLength)
             {
@@ -246,7 +246,7 @@ namespace Garage3.Controllers
             }
 
             // Validate the format using a regular expression
-            string pattern = @"^\d{8}-\d{4}$";
+            string pattern = @"^\d{8}-\d{4}$"; // User is forced to enter -
             Regex regex = new Regex(pattern);
 
             return regex.IsMatch(personalNumber);
