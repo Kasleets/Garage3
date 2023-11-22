@@ -91,7 +91,7 @@ namespace Garage3.Controllers
                 {
                     _context.Add(vehicle); //add new vehicle to DB
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Vehicle added successfully!";
+                    TempData["ShowAddVehicleSuccess"] = true;
                     return RedirectToAction(nameof(Overview));
                 }
             }
@@ -139,7 +139,7 @@ namespace Garage3.Controllers
                 {
                     _context.Update(vehicle); //update edited vehicle into DB
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Vehicle edited successfully!";
+                    TempData["ShowEditVehicleSuccess"] = true;
                     return RedirectToAction(nameof(Overview));
                 }
             }
@@ -205,13 +205,13 @@ namespace Garage3.Controllers
                 var vehicle = await _context.Vehicles.FindAsync(id); // Find & remove vehicle from DB
                 _context.Vehicles.Remove(vehicle);
                 await _context.SaveChangesAsync();
-                TempData["Message"] = "Vehicle deleted successfully!";
+                TempData["ShowDeleteVehicleSuccess"] = true;
                 return RedirectToAction(nameof(Overview));
             }
             catch (DbUpdateException ex)
             {
                 // Log the error
-                TempData["ErrorMessage"] = "Unable to delete the vehicle. Please try again.";
+                TempData["ShowDeleteVehicleError"] = true ;
                 return RedirectToAction(nameof(Delete), new { id = id });
             }
         }
@@ -250,7 +250,7 @@ namespace Garage3.Controllers
                 {
                     _context.Add(parkingRecord);
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Vehicle parked successfully!";
+                    TempData["ShowParkVehicleSuccess"] = true;
                     return RedirectToAction(nameof(Overview));
                 }
             }
@@ -278,7 +278,7 @@ namespace Garage3.Controllers
 
             if (parkingRecord == null)
             {
-                TempData["Message"] = "Vehicle is not currently parked.";
+                TempData["ShowVehicleNotFound"] = true;
                 return RedirectToAction(nameof(Overview));
             }
 
@@ -299,7 +299,7 @@ namespace Garage3.Controllers
                     parkingRecord.CheckOutTime = DateTime.Now;
                     _context.Update(parkingRecord);
                     await _context.SaveChangesAsync();
-                    TempData["Message"] = "Vehicle unparked successfully!";
+                    TempData["ShowRetrieveVehicleSuccess"] = true;
                     return RedirectToAction(nameof(Overview));
                 }
             }

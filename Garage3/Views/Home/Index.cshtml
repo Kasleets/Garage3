@@ -6,3 +6,15 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@* Add code like this example below in the views affected by the SweetAlert popups:
+
+@if (TempData.ContainsKey("ShowAddVehicleSuccess"))
+{
+    <script>
+        $(document).ready(function () {
+            addVehicleSuccess();
+        });
+    </script>
+    TempData.Remove("ShowAddVehicleSuccess"); // Remove the flag from TempData to avoid displaying the message again on page refresh
+} *@
