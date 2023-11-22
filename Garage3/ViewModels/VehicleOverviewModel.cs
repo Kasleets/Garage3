@@ -4,9 +4,28 @@ using Garage3.Models.Entities;
 
 namespace Garage3.ViewModels
 {
+#nullable disable
+    public class VehicleOverviewViewModel
+    {
+        public int VehicleID { get; set; }
+        public string RegistrationNumber { get; set; }
+        public string VehicleType { get; set; }
+        public string OwnerFullName { get; set; }
+        public DateTime ParkTime { get; set; }
+        public string FormattedParkingTime { get; set; }
+
+
+        //public static string GetFormattedParkingTime(ParkingRecord parkingRecord)
+        //{
+        //    var duration = (parkingRecord.CheckOutTime ?? DateTime.Now) - parkingRecord.ParkTime;
+        //    return duration.Days > 0
+        //        ? $"est. {duration.Days} days"
+        //        : $"est. {duration.Hours} hours";
+        //}
+    }
+    #region Legacy code
     //public class VehicleOverviewModel
     //{
-#nullable disable
     //public int VehicleID { get; set; }
     //public string OwnerFullName { get; set; }
     //public string SortOrder { get; set; }                       // property to hold selected sorting option
@@ -31,24 +50,7 @@ namespace Garage3.ViewModels
     //    }
     //}
     //}
-    public class VehicleOverviewViewModel
-    {
-        public int VehicleID { get; set; }
-        public string RegistrationNumber { get; set; }
-        public string VehicleType { get; set; }
-        public string OwnerFullName { get; set; }
-        public DateTime ParkTime { get; set; }
-        public string FormattedParkingTime { get; set; }
-
-
-        //public static string GetFormattedParkingTime(ParkingRecord parkingRecord)
-        //{
-        //    var duration = (parkingRecord.CheckOutTime ?? DateTime.Now) - parkingRecord.ParkTime;
-        //    return duration.Days > 0
-        //        ? $"est. {duration.Days} days"
-        //        : $"est. {duration.Hours} hours";
-        //}
-    }
+    #endregion
 }
     
 

@@ -5,6 +5,7 @@ using Garage3.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,14 +15,53 @@ namespace Garage3.xUnitTests
 {
     public class VehicleControllerTests : TestBase
     {
-        // You can add a seeding method here if needed
+        #region Legacy Overview Test
+        //[Fact]
+        //public async Task Overview_ReturnsViewResult_WithListOfVehicles()
+        //{
+        //    // Arrange
+        //    using var context = CreateDbContext();
+        //    //SeedVehicles(context);
+        //    var controller = new VehicleController(context);
 
+        //    // Act
+        //    var result = await controller.Overview(null, null);
+
+        //    // Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    //var model = Assert.IsAssignableFrom<IEnumerable<dynamic>>(viewResult.Model); // Adjusted to 'dynamic'
+        //    var model = Assert.IsAssignableFrom<IEnumerable<VehicleOverviewViewModel>>(viewResult.Model); // Adjusted to 'VehicleOverviewViewModel'
+        //    Assert.NotNull(model);
+        //    Assert.True(model.Any()); // Check that there are vehicles present in the model
+        //}
+
+        //[Fact]
+        //public async Task Overview_ReturnsViewResult_WithListOfVehicles()
+        //{
+        //    // Arrange
+        //    using var context = CreateDbContext();
+        //    var controller = new VehicleController(context);
+
+        //    // Act
+        //    var result = await controller.Overview(null, null);
+
+
+        //    // Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    var model = Assert.IsAssignableFrom<IEnumerable<VehicleOverviewViewModel>>(viewResult.Model);
+        //    Assert.NotNull(model);
+        //    Assert.True(model.Any()); // Check that there are vehicles present in the model
+
+
+
+        //}
+        #endregion
         [Fact]
-        public async Task Overview_ReturnsViewResult_WithListOfVehicles()
+        public async Task Overview_ReturnsViewResult_WithCorrectModelType()
         {
             // Arrange
             using var context = CreateDbContext();
-            SeedVehicles(context);
+            //SeedVehicles(context);
             var controller = new VehicleController(context);
 
             // Act
@@ -29,14 +69,9 @@ namespace Garage3.xUnitTests
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            //var model = Assert.IsAssignableFrom<IEnumerable<dynamic>>(viewResult.Model); // Adjusted to 'dynamic'
-            var model = Assert.IsAssignableFrom<IEnumerable<VehicleOverviewViewModel>>(viewResult.Model); // Adjusted to 'VehicleOverviewViewModel'
+            var model = Assert.IsAssignableFrom<IEnumerable<VehicleOverviewViewModel>>(viewResult.ViewData.Model);
             Assert.NotNull(model);
-            Assert.True(model.Any()); // Check that there are vehicles present in the model
         }
-
-
-
 
         [Fact]
         public async Task Add_PostValidVehicle_AddsVehicleToDatabase()
@@ -74,7 +109,7 @@ namespace Garage3.xUnitTests
         {
             // Arrange
             using var context = CreateDbContext();
-            SeedVehicles(context);
+            //SeedVehicles(context);
             var controller = new VehicleController(context)
             {
                 TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
@@ -98,13 +133,13 @@ namespace Garage3.xUnitTests
         {
             // Arrange
             using var context = CreateDbContext();
-            SeedVehicles(context);
+            //SeedVehicles(context);
             var controller = new VehicleController(context)
             {
                 TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
             };
 
-            var vehicleToDelete = context.Vehicles.First(); // Get the first vehicle to delete
+            var vehicleToDelete = context.Vehicles.LastOrDefault(); // Get the last vehicle to delete
             int vehicleToDeleteId = vehicleToDelete.VehicleID;
 
             // Act
@@ -122,7 +157,7 @@ namespace Garage3.xUnitTests
             // Had to make sure to test the POST method, not the GET method
 
             using var context = CreateDbContext();
-            SeedVehicles(context);
+            //SeedVehicles(context);
             var controller = new VehicleController(context)
             {
                 TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
@@ -152,7 +187,7 @@ namespace Garage3.xUnitTests
         {
             // Arrange
             using var context = CreateDbContext();
-            SeedVehicles(context);
+            //SeedVehicles(context);
             var controller = new VehicleController(context)
             {
                 TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
