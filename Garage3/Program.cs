@@ -10,12 +10,17 @@ namespace Garage3
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Add AutoMapper Kasleet
+            builder.Services.AddAutoMapper(typeof(Program));
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
             // Add DbContext Kasleet
             builder.Services.AddDbContext<ParkingDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 
 
             var app = builder.Build();
