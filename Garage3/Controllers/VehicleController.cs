@@ -176,6 +176,33 @@ namespace Garage3.Controllers
 
         //    return View(vehicle);
         //}
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var vehicle = await _context.Vehicles
+        //        .Include(v => v.Owner)
+        //        .Include(v => v.VehicleType)
+        //        .FirstOrDefaultAsync(m => m.VehicleID == id);
+
+        //    if (vehicle == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var viewModel = new VehicleDetailedViewModel
+        //    {
+        //        Vehicle = vehicle,
+        //        VehicleType = vehicle.VehicleType,
+        //        ParkingRecord = vehicle.ParkingRecords.FirstOrDefault() 
+        //                                                                // Populate other properties if needed
+        //    };
+
+        //    return View(viewModel);
+        //}
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -183,26 +210,52 @@ namespace Garage3.Controllers
                 return NotFound();
             }
 
+            // Fetch the vehicle along with the related Owner, VehicleType, and ParkingRecords
             var vehicle = await _context.Vehicles
                 .Include(v => v.Owner)
                 .Include(v => v.VehicleType)
-                .FirstOrDefaultAsync(m => m.VehicleID == id);
+                .Include(v => v.ParkingRecords)
+                .SingleOrDefaultAsync(m => m.VehicleID == id);
 
             if (vehicle == null)
             {
                 return NotFound();
             }
 
-            var viewModel = new VehicleDetailedViewModel
+            // Assuming we want the latest parking record for display in the detailed view
+            var latestParkingRecord = vehicle.ParkingRecords
+                .OrderByDescending(pr => pr.ParkTime)
+                .FirstOrDefault();
+
+            // Create the ViewModel
+            VehicleDetailedViewModel viewModel = new()
             {
-                Vehicle = vehicle,
-                VehicleType = vehicle.VehicleType,
-                ParkingRecord = vehicle.ParkingRecords.FirstOrDefault() 
-                                                                        // Populate other properties if needed
+                VehicleID = vehicle.VehicleID,
+                RegistrationNumber = vehicle.RegistrationNumber,
+                Color = vehicle.Color,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                NumberOfWheels = vehicle.NumberOfWheels,
+                OwnerFirstName = vehicle.Owner?.FirstName!, // Use of null-conditional to avoid null reference
+                OwnerLastName = vehicle.Owner?.LastName!,
+                VehicleTypeName = vehicle.VehicleType?.TypeName!,
+                ParkTime = latestParkingRecord?.ParkTime ?? DateTime.MinValue, // Use of null-coalescing to provide default value
+                CheckOutTime = latestParkingRecord?.CheckOutTime,
+                // Call your method to get formatted parking time, handling the case when there's no parking record
+                FormattedParkingDuration = latestParkingRecord != null ? GetFormattedParkingTime(latestParkingRecord) : string.Empty              
             };
 
+            // Pass the ViewModel to the view
             return View(viewModel);
         }
+        private string GetFormattedParkingTime(ParkingRecord parkingRecord)
+        {
+            var duration = (parkingRecord.CheckOutTime ?? DateTime.Now) - parkingRecord.ParkTime;
+            return duration.Days > 0
+                ? $"{duration.Days} days, {duration.Hours} hours, {duration.Minutes} minutes"
+                : $"{duration.Hours} hours, {duration.Minutes} minutes";
+        }
+
 
 
         // GET: Vehicle/Delete/5
