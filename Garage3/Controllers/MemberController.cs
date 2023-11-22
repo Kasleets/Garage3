@@ -20,8 +20,10 @@ namespace Garage3.Controllers
         // GET: Member/Overview
         public async Task<IActionResult> Overview(string sortOrder, string searchString)
         {
+            // Set up sorting parameters
             ViewBag.NameSortParam = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
+            // Query to retrieve members and their vehicle count
             var members = from m in _context.Members
                           select new
                           {
@@ -29,21 +31,40 @@ namespace Garage3.Controllers
                               VehicleCount = m.Vehicles.Count
                           };
 
+            // Apply search filter if searchString is provided
             if (!string.IsNullOrEmpty(searchString))
             {
                 members = members.Where(m => m.Member.FirstName.Contains(searchString) || m.Member.LastName.Contains(searchString));
             }
 
+            // Apply sorting based on sortOrder parameter
             switch (sortOrder)
             {
                 case "name_desc":
+                    // Sort by first name in descending order
                     members = members.OrderByDescending(m => m.Member.FirstName);
                     break;
+                case "name_asc":
+                    // Sort by first name in ascending order
+                    members = members.OrderBy(m => m.Member.FirstName);
+                    break;
+                case "name2_desc":
+                    // Sort by the first two characters of first name in descending order,
+                    // then by the entire first name in descending order
+                    members = members.OrderByDescending(m => m.Member.FirstName.Substring(0, 2)).ThenByDescending(m => m.Member.FirstName);
+                    break;
+                case "name2_asc":
+                    // Sort by the first two characters of first name in ascending order,
+                    // then by the entire first name in ascending order
+                    members = members.OrderBy(m => m.Member.FirstName.Substring(0, 2)).ThenBy(m => m.Member.FirstName);
+                    break;
                 default:
+                    // Default sorting: Sort by first name in ascending order
                     members = members.OrderBy(m => m.Member.FirstName);
                     break;
             }
 
+            // Create a view model with selected member properties
             var viewModel = members.Select(m => new
             {
                 MemberID = m.Member.MemberID,
@@ -52,10 +73,13 @@ namespace Garage3.Controllers
                 VehicleCount = m.VehicleCount
             });
 
+            
             var membersList = await viewModel.ToListAsync();
 
+            // Return the Overview view with the sorted and filtered members list
             return View("Overview", membersList);
         }
+
 
         // GET: Member/Create
         public IActionResult Create()
