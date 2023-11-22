@@ -108,7 +108,7 @@ namespace Garage3.Data
             modelBuilder.Entity<Vehicle>().HasData(
                 new Vehicle { VehicleID = 1, OwnerID = 1, RegistrationNumber = "ABC123", Brand = "Toyota", Model = "Corolla", Color = "Blue", NumberOfWheels = 4, VehicleTypeID = 1 },
                 new Vehicle { VehicleID = 2, OwnerID = 2, RegistrationNumber = "XYZ789", Brand = "Honda", Model = "Civic", Color = "Red", NumberOfWheels = 4, VehicleTypeID = 1 },
-                new Vehicle { VehicleID = 3, OwnerID = 3, RegistrationNumber = "DEF456", Brand = "Ford", Model = "Fiesta", Color = "Green", NumberOfWheels = 4, VehicleTypeID = 1 },
+                new Vehicle { VehicleID = 3, OwnerID = 3, RegistrationNumber = "DEF456", Brand = "Ford", Model = "Fiesta", Color = "Green", NumberOfWheels = 4, VehicleTypeID = 3 },
                 new Vehicle { VehicleID = 4, OwnerID = 4, RegistrationNumber = "GHI789", Brand = "Volvo", Model = "V70", Color = "Black", NumberOfWheels = 4, VehicleTypeID = 1 },
                 new Vehicle { VehicleID = 5, OwnerID = 5, RegistrationNumber = "JKL012", Brand = "Saab", Model = "900", Color = "White", NumberOfWheels = 4, VehicleTypeID = 1 },
                 new Vehicle { VehicleID = 6, OwnerID = 6, RegistrationNumber = "MNO345", Brand = "Volkswagen", Model = "Golf", Color = "Silver", NumberOfWheels = 4, VehicleTypeID = 1 }

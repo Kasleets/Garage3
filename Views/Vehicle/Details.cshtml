@@ -1,4 +1,4 @@
-﻿@model DetailsViewModel
+﻿@model Garage3.Models.Entities.Vehicle
 
 @{
     ViewData["Title"] = "Details";
@@ -8,25 +8,24 @@
 
 <div>
     <dl class="dl-horizontal">
+        <dt>Owner:</dt>
+        <dd>@Model.OwnerID</dd>
         <dt>Registration Number:</dt>
-        <dd>@Model.Vehicle.RegistrationNumber</dd>
-        <dt>Arrival Time:</dt>
-        <dd>@Model.ParkingRecord.ParkTime</dd>
+        <dd>@Model.RegistrationNumber</dd>
         <dt>Vehicle Type:</dt>
-        <dd>@Model.Vehicle.VehicleType</dd>
+        <dd>@Model.VehicleTypeID</dd>
         <dt>Color:</dt>
-        <dd>@Model.Vehicle.Color</dd>
+        <dd>@Model.Color</dd>
         <dt>Brand:</dt>
-        <dd>@Model.Vehicle.Brand</dd>
+        <dd>@Model.Brand</dd>
         <dt>Model:</dt>
-        <dd>@Model.Vehicle.Model</dd>
+        <dd>@Model.Model</dd>
         <dt>Number of Wheels:</dt>
-        <dd>@Model.Vehicle.NumberOfWheels</dd>
-        <dt>Total Parking time</dt>
-        <dd>@Model.GetFormattedParkingTime(Model.ParkingRecord)</dd>
+        <dd>@Model.NumberOfWheels</dd>
     </dl>
 </div>
 
 <p>
+    <a asp-action="Edit" asp-route-id="@Model.VehicleID">Edit</a> |
     <a asp-action="Overview">Back to Overview</a>
 </p>

@@ -1,0 +1,28 @@
+﻿@model Garage3.Models.Entities.ParkingRecord
+
+@{
+    ViewData["Title"] = "Park Vehicle";
+}
+
+<h2>Park Vehicle</h2>
+
+<form asp-action="Park" asp-controller="Vehicle" method="post">
+    <input type="hidden" asp-for="VehicleID" />
+
+    <div class="form-group">
+        <label asp-for="VehicleID"></label>
+        <input asp-for="VehicleID" class="form-control" disabled />
+        <span asp-validation-for="VehicleID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ParkTime"></label>
+        <input asp-for="ParkTime" class="form-control" disabled />
+        <span asp-validation-for="ParkTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Park Vehicle" class="btn btn-primary" />
+        <a asp-action="Overview" asp-controller="Vehicle" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

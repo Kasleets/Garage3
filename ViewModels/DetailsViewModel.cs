@@ -5,12 +5,16 @@ namespace Garage3.ViewModels
     public class DetailsViewModel
     {
 #nullable disable
-        public Vehicle Vehicle { get; set; }
+      public Vehicle Vehicle { get; set; }
+        public VehicleType VehicleType { get; set; }
 
         public ParkingRecord ParkingRecord { get; set; }
+
+
+
         public string GetFormattedParkingTime(ParkingRecord vehicle)
         {
-            var parkingTime = DateTime.Now - vehicle.ParkTime ;
+            var parkingTime = DateTime.Now - vehicle.ParkTime;
             string formattedTime = string.Empty;
             if (parkingTime.Days > 0)
             {

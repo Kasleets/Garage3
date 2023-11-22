@@ -1,0 +1,53 @@
+﻿@model Garage3.Models.Entities.Vehicle
+
+@{
+    ViewData["Title"] = "Edit Vehicle";
+}
+
+<h2>Edit Vehicle</h2>
+
+<form asp-action="Edit" asp-controller="Vehicle" asp-route-id="@Model.VehicleID" method="post">
+    <input type="hidden" asp-for="VehicleID" />
+
+    <div class="form-group">
+        <label asp-for="VehicleTypeID"></label>
+        @Html.DropDownListFor(model => model.VehicleTypeID, ViewBag.VehicleTypeID as SelectList, "Please select", new { @class = "form-control" })
+        <span asp-validation-for="VehicleTypeID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RegistrationNumber"></label>
+        <input asp-for="RegistrationNumber" class="form-control" disabled />
+        <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Color"></label>
+        <input asp-for="Color" class="form-control" />
+        <span asp-validation-for="Color" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Brand"></label>
+        <input asp-for="Brand" class="form-control" />
+        <span asp-validation-for="Brand" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Model"></label>
+        <input asp-for="Model" class="form-control" />
+        <span asp-validation-for="Model" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NumberOfWheels"></label>
+        <input asp-for="NumberOfWheels" class="form-control" />
+        <span asp-validation-for="NumberOfWheels" class="text-danger"></span>
+    </div>
+
+
+    <p>
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="Overview" asp-controller="Vehicle" asp-route-id="@Model.VehicleID" class="btn btn-secondary">Back to Overview</a>
+    </p>
+</form>

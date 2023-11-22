@@ -2,33 +2,39 @@
 
 <h2>Vehicle Overview</h2>
 
+<div>
+    <form asp-action="Overview" asp-controller="Vehicle" method="get">
+        <label>Search:</label>
+        <input type="text" name="searchString" value="@ViewBag.CurrentFilter" />
+        <input type="submit" value="Search" />
+    </form>
+</div>
+
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.ActionLink("Registration Number", "Overview", new { sortOrder = ViewBag.NameSortParam })
+            </th>
+            <th>
+                @Html.ActionLink("Park Time", "Overview", new { sortOrder = ViewBag.TimeSortParam })
+            </th>
             <th>Owner</th>
             <th>Membership</th>
             <th>Vehicle Type</th>
-            <th>Registration Number</th>
-            <th>Park Time</th>
-            <th>
-                Details
-            </th>
-            <th>
-                Edit
-            </th>
+            <th>Details</th>
+            <th>Edit</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var vehicle in Model)
         {
             <tr>
+                <td>@vehicle.RegistrationNumber</td>
+                <td>@vehicle.ParkTime</td>
                 <td>@vehicle.OwnerFullName</td>
                 <td>@vehicle.MembershipType</td>
                 <td>@vehicle.VehicleType</td>
-                
-                <td>@vehicle.RegistrationNumber</td>
-                <td>@vehicle.ParkTime</td>
-
                 <td>
                     <a asp-action="Details" asp-controller="Vehicle" asp-route-id="@vehicle.VehicleID">Details</a>
                 </td>
