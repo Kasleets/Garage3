@@ -236,17 +236,35 @@ namespace Garage3.Controllers
             }
         }
 
+        //private bool IsValidSocialSecurityNumber(string personalNumber)
+        //{
+        //    const int validLength = 13;// Remember to Re-execute this 
+
+        //    if (personalNumber.Length != validLength)
+        //    {
+        //        return false;
+        //    }
+
+        //    // Validate the format using a regular expression
+        //    string pattern = @"^\d{8}-\d{4}$"; // User is forced to enter -
+        //    Regex regex = new Regex(pattern);
+
+        //    return regex.IsMatch(personalNumber);
+        //}
         private bool IsValidSocialSecurityNumber(string personalNumber)
         {
-            const int validLength = 13;// Remember to Re-execute this 
-
-            if (personalNumber.Length != validLength)
+            // Remove any hyphens and check if the remaining characters are all digits
+            var digitsOnly = personalNumber.Replace("-", "");
+            if (!digitsOnly.All(char.IsDigit) || digitsOnly.Length != 12)
             {
                 return false;
             }
 
+            // Insert a hyphen after the 8th digit
+            personalNumber = digitsOnly.Insert(8, "-");
+
             // Validate the format using a regular expression
-            string pattern = @"^\d{8}-\d{4}$"; // User is forced to enter -
+            string pattern = @"^\d{8}-\d{4}$";
             Regex regex = new Regex(pattern);
 
             return regex.IsMatch(personalNumber);
