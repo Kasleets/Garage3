@@ -3,6 +3,27 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to the G6 Garage 3.0 !</h1>
+    <p>Manage your garage with ease. Use the links below to navigate:</p>
+    <p>
+        @* Added the link to register, only thing different from 2.0 *@
+        <a asp-controller="ParkedVehicles" asp-action="Register">Register Member</a>
+        |
+        <a asp-controller="ParkedVehicles" asp-action="Parking">Check-In</a>
+        |
+        <a asp-controller="ParkedVehicles" asp-action="Retrieving">Retrieve</a>
+        |
+        <a asp-controller="ParkedVehicles" asp-action="Overview">Go to Overview</a>
+    </p>
+
+    <div class="mt-5">
+        <h4>Navigation Tips</h4>
+        <p>Explore these quick tips for smooth navigation:</p>
+        <p>Add a new user with "Register Member"</p>
+        <p>Park a new vehicle with "Check-In".</p>
+        <p>Retrieve your vehicle using "Retrieve".</p>
+        <p>Review all parked vehicles in "Overview".</p>
+        <p>Switch between sections with the top navigation.</p>
+        <p>Need to get in touch? Find our contact info in the <a asp-controller="Home" asp-action="Privacy">About</a> page.</p>
+    </div>
 </div>
