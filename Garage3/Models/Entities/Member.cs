@@ -1,5 +1,6 @@
 ﻿namespace Garage3.Models.Entities
 {
+#nullable disable
     public class Member
     {
         public int MemberID { get; set; }

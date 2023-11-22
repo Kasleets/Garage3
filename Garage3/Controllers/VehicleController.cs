@@ -60,6 +60,8 @@ namespace Garage3.Controllers
               of creating VehiclesController, so kindly remove those comments 
              while creating views and viewmodel and do changes as per your needs*/
 
+            // Todo: Create VehicleViewModel and use it instead of anonymous type
+
             var viewModel = vehicles.Select(v => new /*VehicleViewModel*/
             {
                 VehicleID = v.Vehicle.VehicleID,
