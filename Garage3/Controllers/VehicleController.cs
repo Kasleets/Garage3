@@ -63,80 +63,80 @@ namespace Garage3.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult Retrieving()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public ActionResult Retrieving()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public async Task<ActionResult> Retrieving(ReceiptViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            { // Retrieve the vehicle based on the registration number
-                var vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.RegistrationNumber == viewModel.RegistrationNumber);
+        //[HttpPost]
+        //public async Task<ActionResult> Retrieving(ReceiptViewModel viewModel)
+        //{
+        //    if (ModelState.IsValid)
+        //    { // Retrieve the vehicle based on the registration number
+        //        var vehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.RegistrationNumber == viewModel.RegistrationNumber);
 
-                if (vehicle != null)
-                {
-                    // Retrieve the corresponding vehicle type
-                    var vehicleType = await _context.VehicleTypes.FirstOrDefaultAsync(vt => vt.VehicleTypeID == vehicle.VehicleTypeID);
+        //        if (vehicle != null)
+        //        {
+        //            // Retrieve the corresponding vehicle type
+        //            var vehicleType = await _context.VehicleTypes.FirstOrDefaultAsync(vt => vt.VehicleTypeID == vehicle.VehicleTypeID);
 
-                    if (vehicleType != null)
-                    {
-                        // Calculate parking time based on the stored park time
-                        TimeSpan parkingTime = DateTime.Now.Subtract(viewModel.ArrivalTime);
+        //            if (vehicleType != null)
+        //            {
+        //                // Calculate parking time based on the stored park time
+        //                TimeSpan parkingTime = DateTime.Now.Subtract(viewModel.ArrivalTime);
 
-                        // Fetch cost per hour based on the vehicle type from GarageSettings
-                        decimal costPerHour = GetCostPerHourByVehicleType(vehicleType.TypeName);
+        //                // Fetch cost per hour based on the vehicle type from GarageSettings
+        //                decimal costPerHour = GetCostPerHourByVehicleType(vehicleType.TypeName);
 
-                        // Create the receipt view model
-                        var receiptViewModel = new ReceiptViewModel(
-                            vehicle.VehicleID,
-                            vehicle.RegistrationNumber,
-                            viewModel.ArrivalTime,
-                            DateTime.Now,
-                            costPerHour)
-                        {
-                            ParkingTime = parkingTime
-                        };
+        //                // Create the receipt view model
+        //                var receiptViewModel = new ReceiptViewModel(
+        //                    vehicle.VehicleID,
+        //                    vehicle.RegistrationNumber,
+        //                    viewModel.ArrivalTime,
+        //                    DateTime.Now,
+        //                    costPerHour)
+        //                {
+        //                    ParkingTime = parkingTime
+        //                };
 
-                        // Remove the vehicle from the database
-                        _context.Vehicles.Remove(vehicle);
-                        await _context.SaveChangesAsync();
+        //                // Remove the vehicle from the database
+        //                _context.Vehicles.Remove(vehicle);
+        //                await _context.SaveChangesAsync();
 
-                        // Store the receipt info in TempData
-                        TempData["Receipt"] = JsonConvert.SerializeObject(receiptViewModel);
+        //                // Store the receipt info in TempData
+        //                TempData["Receipt"] = JsonConvert.SerializeObject(receiptViewModel);
 
-                        // Decide whether to display the receipt or not
-                        if (viewModel.PrintReceipt)
-                        {
-                            // Redirect to the Receipt action with the vehicle's ID
-                            return RedirectToAction("Receipt");
-                        }
-                        else
-                        {
-                            // Redirect to a different action or view based on your requirements
-                            // For example:
-                            // TempData["Message"] = "Vehicle retrieved successfully! Would you like a receipt?";
-                            // return RedirectToAction("Overview");
-                        }
-                    }
-                    else
-                    {
-                        // Handle the case where the vehicle type is not found
-                        ModelState.AddModelError("", "Error retrieving vehicle type.");
-                    }
-                }
-                else
-                {
-                    // If the vehicle is not found
-                    ModelState.AddModelError("RegistrationNumber", "Vehicle not found.");
-                }
-            }
+        //                // Decide whether to display the receipt or not
+        //                if (viewModel.PrintReceipt)
+        //                {
+        //                    // Redirect to the Receipt action with the vehicle's ID
+        //                    return RedirectToAction("Receipt");
+        //                }
+        //                else
+        //                {
+        //                    // Redirect to a different action or view based on your requirements
+        //                    // For example:
+        //                    // TempData["Message"] = "Vehicle retrieved successfully! Would you like a receipt?";
+        //                    // return RedirectToAction("Overview");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                // Handle the case where the vehicle type is not found
+        //                ModelState.AddModelError("", "Error retrieving vehicle type.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // If the vehicle is not found
+        //            ModelState.AddModelError("RegistrationNumber", "Vehicle not found.");
+        //        }
+        //    }
 
-            // If ModelState is not valid or if the vehicle is not found, return the view with errors
-            return View(viewModel);
-        }
+        //    // If ModelState is not valid or if the vehicle is not found, return the view with errors
+        //    return View(viewModel);
+        //}
 
         // GET: Vehicle/Overview
         #region Old logic keeping as placeholder reference
