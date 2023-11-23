@@ -20,8 +20,18 @@ namespace Garage3
             builder.Services.AddDbContext<ParkingDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Add Configuration for capcities and rates Xiahui
 
+           
+           //builder.Services.Configure<GarageSettings>(Configuration.GetSection(GarageSettings.VehicleRates));
 
+            //builder.Services.Configure<GarageSettings>(GarageSettings.Capacity,
+            //    builder.Configuration.GetSection("GarageSettings:Capacity"));
+
+            builder.Services.Configure<GarageSettings>(GarageSettings.VehicleRates,
+               builder.Configuration.GetSection("GarageSettings:VehicleRates"));
+
+            //builder.Services.AddGarageSettings(Configuration);
 
             var app = builder.Build();
 
