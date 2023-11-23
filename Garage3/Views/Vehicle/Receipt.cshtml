@@ -1,0 +1,39 @@
+﻿@model ReceiptViewModel
+
+<h2>Receipt</h2>
+
+<table class="table">
+    <tr>
+        <th>Vehicle ID</th>
+        <td>@Model.VehicleId</td>
+    </tr>
+    <tr>
+        <th>Registration Number</th>
+        <td>@Model.RegistrationNumber</td>
+    </tr>
+    <tr>
+        <th>Arrival Time</th>
+        <td>@Model.ArrivalTime</td>
+    </tr>
+    <tr>
+        <th>Departure Time</th>
+        <td>@Model.DepartureTime</td>
+    </tr>
+    <tr>
+        <th>Parking Time</th>
+        <td>@Model.ParkingTime</td>
+    </tr>
+    <tr>
+        <th>Cost Per Hour</th>
+        <td>@Model.CostPerHour</td>
+    </tr>
+    <tr>
+        <th>Total Cost</th>
+        <td>@(Model.CostPerHour * (decimal)Model.ParkingTime.TotalHours)</td>
+    </tr>
+</table>
+<!-- Button to print the receipt -->
+<button onclick="window.print();" class="btn btn-primary">Print Receipt</button>
+
+<!-- Link to go back to the Overview page -->
+<a asp-action="Overview" asp-controller="Vehicle" class="btn btn-secondary">Back to Overview</a>

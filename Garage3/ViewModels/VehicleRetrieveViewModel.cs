@@ -13,5 +13,7 @@ namespace Garage3.ViewModels
 
             set => _registrationNumber = value?.ToUpper();
         }
+        public bool PrintReceipt { get; set; }
+
     }
 }
