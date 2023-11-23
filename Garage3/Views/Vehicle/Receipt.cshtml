@@ -1,0 +1,23 @@
+﻿@model ReceiptViewModel
+
+<!-- Display receipt details -->
+<h2>Checkout receipt</h2>
+<div>
+    <dl class="dl-horizontal">
+        <dt>Vehicle ID: </dt>
+        <dd>@Model.VehicleId</dd>
+        <dt>Registration Number: </dt>
+        <dd>@Model.RegistrationNumber</dd>
+        <dt>Arrival Time: </dt>
+        <dd>@Model.ArrivalTime</dd>
+        <dt>Departure Time: </dt>
+        <dd>@Model.DepartureTime</dd>
+        <dt>Parking Time: </dt>
+        <dd>@Model.FormattedParkingTime</dd>
+        <dt>Total Cost: </dt>
+        <dd>@Model.FormattedTotalCost</dd>
+    </dl>
+</div>
+
+<button onclick="window.print();" class="btn btn-primary">Print</button>
+<a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Back to Home</a>
