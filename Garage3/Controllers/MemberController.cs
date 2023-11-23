@@ -119,12 +119,14 @@ namespace Garage3.Controllers
                     ModelState.AddModelError("PersonalNumber", "A member with this social security number already exists.");
                 }
 
+                // Check if the model is valid before saving
                 if (ModelState.IsValid)
                 {
                     _context.Add(member);
                     await _context.SaveChangesAsync();
                     TempData["Message"] = "Member registered successfully!";
-                    return RedirectToAction(nameof(Overview));
+                    //return RedirectToAction(nameof(Overview));
+                    return RedirectToAction("Index", "Home");
                 }
             }
             catch (DbUpdateException ex)
@@ -259,7 +261,7 @@ namespace Garage3.Controllers
                 return RedirectToAction(nameof(Delete), new { id = id });
             }
         }
-
+        #region Legacy code
         //private bool IsValidSocialSecurityNumber(string personalNumber)
         //{
         //    const int validLength = 13;// Remember to Re-execute this 
@@ -275,6 +277,7 @@ namespace Garage3.Controllers
 
         //    return regex.IsMatch(personalNumber);
         //}
+        #endregion
         private bool IsValidSocialSecurityNumber(string personalNumber)
         {
             // Remove any hyphens and check if the remaining characters are all digits
