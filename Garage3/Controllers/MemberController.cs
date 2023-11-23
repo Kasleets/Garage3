@@ -5,6 +5,7 @@ using Garage3.Models.Entities;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Garage3.ViewModels;
 
 namespace Garage3.Controllers
 {
@@ -64,8 +65,17 @@ namespace Garage3.Controllers
                     break;
             }
 
+            //// Create a view model with selected member properties
+            //var viewModel = members.Select(m => new
+            //{
+            //    MemberID = m.Member.MemberID,
+            //    FirstName = m.Member.FirstName,
+            //    LastName = m.Member.LastName,
+            //    VehicleCount = m.VehicleCount
+            //});
+
             // Create a view model with selected member properties
-            var viewModel = members.Select(m => new
+            var viewModel = members.Select(m => new MemberOverviewViewModel
             {
                 MemberID = m.Member.MemberID,
                 FirstName = m.Member.FirstName,
@@ -73,11 +83,11 @@ namespace Garage3.Controllers
                 VehicleCount = m.VehicleCount
             });
 
-            
             var membersList = await viewModel.ToListAsync();
 
             // Return the Overview view with the sorted and filtered members list
-            return View("Overview", membersList);
+            //return View("Overview", membersList);
+            return View(membersList);
         }
 
 
@@ -119,12 +129,20 @@ namespace Garage3.Controllers
                     ModelState.AddModelError("PersonalNumber", "A member with this social security number already exists.");
                 }
 
+                // Check if the model is valid before saving
                 if (ModelState.IsValid)
                 {
                     _context.Add(member);
                     await _context.SaveChangesAsync();
+
+                    // Create a new account for the member
+                    var account = new Account { MemberID = member.MemberID };
+                    _context.Accounts.Add(account);
+                    await _context.SaveChangesAsync();
+
                     TempData["Message"] = "Member registered successfully!";
-                    return RedirectToAction(nameof(Overview));
+                    //return RedirectToAction(nameof(Overview));
+                    return RedirectToAction("Index", "Home");
                 }
             }
             catch (DbUpdateException ex)
@@ -259,7 +277,7 @@ namespace Garage3.Controllers
                 return RedirectToAction(nameof(Delete), new { id = id });
             }
         }
-
+        #region Legacy code
         //private bool IsValidSocialSecurityNumber(string personalNumber)
         //{
         //    const int validLength = 13;// Remember to Re-execute this 
@@ -275,6 +293,7 @@ namespace Garage3.Controllers
 
         //    return regex.IsMatch(personalNumber);
         //}
+        #endregion
         private bool IsValidSocialSecurityNumber(string personalNumber)
         {
             // Remove any hyphens and check if the remaining characters are all digits
