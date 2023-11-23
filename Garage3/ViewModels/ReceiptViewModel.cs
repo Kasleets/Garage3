@@ -13,8 +13,9 @@
             public DateTime DepartureTime { get; set; }
             public TimeSpan ParkingTime { get; set; }
             public decimal CostPerHour { get; set; }
+            public bool PrintReceipt { get; set; }
 
-            public ReceiptViewModel(
+        public ReceiptViewModel(
                 int vehicleId,
                 string registrationNumber,
                 DateTime arrivalTime,

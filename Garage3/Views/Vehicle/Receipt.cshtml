@@ -32,3 +32,8 @@
         <td>@(Model.CostPerHour * (decimal)Model.ParkingTime.TotalHours)</td>
     </tr>
 </table>
+<!-- Button to print the receipt -->
+<button onclick="window.print();" class="btn btn-primary">Print Receipt</button>
+
+<!-- Link to go back to the Overview page -->
+<a asp-action="Overview" asp-controller="Vehicle" class="btn btn-secondary">Back to Overview</a>
