@@ -5,6 +5,7 @@ using Garage3.Models.Entities;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Garage3.ViewModels;
 
 namespace Garage3.Controllers
 {
@@ -64,8 +65,17 @@ namespace Garage3.Controllers
                     break;
             }
 
+            //// Create a view model with selected member properties
+            //var viewModel = members.Select(m => new
+            //{
+            //    MemberID = m.Member.MemberID,
+            //    FirstName = m.Member.FirstName,
+            //    LastName = m.Member.LastName,
+            //    VehicleCount = m.VehicleCount
+            //});
+
             // Create a view model with selected member properties
-            var viewModel = members.Select(m => new
+            var viewModel = members.Select(m => new MemberOverviewViewModel
             {
                 MemberID = m.Member.MemberID,
                 FirstName = m.Member.FirstName,
@@ -73,11 +83,11 @@ namespace Garage3.Controllers
                 VehicleCount = m.VehicleCount
             });
 
-            
             var membersList = await viewModel.ToListAsync();
 
             // Return the Overview view with the sorted and filtered members list
-            return View("Overview", membersList);
+            //return View("Overview", membersList);
+            return View(membersList);
         }
 
 
