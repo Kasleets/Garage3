@@ -22,9 +22,25 @@ namespace Garage3.xUnitTests
 
             var dbContext = new ParkingDbContext(options);
 
-            // Seed the database if needed
+            // Seed the database
+            SeedVehicles(dbContext);
 
             return dbContext;
+        }
+        // Implement the SeedVehicles method 
+        protected void SeedVehicles(ParkingDbContext context)
+        {
+            context.Vehicles.Add(new Vehicle { VehicleID = 1, OwnerID = 1, RegistrationNumber = "ABC123", Brand = "Toyota", Model = "Corolla", Color = "Blue", NumberOfWheels = 4, VehicleTypeID = 1 });
+            context.Vehicles.Add(new Vehicle { VehicleID = 2, OwnerID = 2, RegistrationNumber = "XYZ789", Brand = "Honda", Model = "Civic", Color = "Red", NumberOfWheels = 4, VehicleTypeID = 1 });
+            context.Vehicles.Add(new Vehicle { VehicleID = 3, OwnerID = 3, RegistrationNumber = "DEF456", Brand = "Ford", Model = "Fiesta", Color = "Green", NumberOfWheels = 4, VehicleTypeID = 1 });
+            context.Vehicles.Add(new Vehicle { VehicleID = 4, OwnerID = 4, RegistrationNumber = "GHI789", Brand = "Volvo", Model = "V70", Color = "Black", NumberOfWheels = 4, VehicleTypeID = 1 });
+            context.Vehicles.Add(new Vehicle { VehicleID = 5, OwnerID = 5, RegistrationNumber = "JKL012", Brand = "Saab", Model = "900", Color = "White", NumberOfWheels = 4, VehicleTypeID = 1 });
+
+            context.ParkingRecords.Add(new ParkingRecord { VehicleID = 1, MemberID = 1, ParkTime = DateTime.Now.AddHours(-2), CheckOutTime = null });
+            context.ParkingRecords.Add(new ParkingRecord { VehicleID = 2, MemberID = 2, ParkTime = DateTime.Now.AddHours(-4), CheckOutTime = null });
+            // Add as many vehicles as needed for test
+
+            context.SaveChanges();
         }
     }
 
