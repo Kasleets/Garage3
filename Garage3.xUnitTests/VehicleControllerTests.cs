@@ -1,9 +1,11 @@
 ﻿using Garage3.Controllers;
 using Garage3.Data;
 using Garage3.Models.Entities;
+using Garage3.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,14 +15,53 @@ namespace Garage3.xUnitTests
 {
     public class VehicleControllerTests : TestBase
     {
-        // You can add a seeding method here if needed
+        #region Legacy Overview Test
+        //[Fact]
+        //public async Task Overview_ReturnsViewResult_WithListOfVehicles()
+        //{
+        //    // Arrange
+        //    using var context = CreateDbContext();
+        //    //SeedVehicles(context);
+        //    var controller = new VehicleController(context);
 
+        //    // Act
+        //    var result = await controller.Overview(null, null);
+
+        //    // Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    //var model = Assert.IsAssignableFrom<IEnumerable<dynamic>>(viewResult.Model); // Adjusted to 'dynamic'
+        //    var model = Assert.IsAssignableFrom<IEnumerable<VehicleOverviewViewModel>>(viewResult.Model); // Adjusted to 'VehicleOverviewViewModel'
+        //    Assert.NotNull(model);
+        //    Assert.True(model.Any()); // Check that there are vehicles present in the model
+        //}
+
+        //[Fact]
+        //public async Task Overview_ReturnsViewResult_WithListOfVehicles()
+        //{
+        //    // Arrange
+        //    using var context = CreateDbContext();
+        //    var controller = new VehicleController(context);
+
+        //    // Act
+        //    var result = await controller.Overview(null, null);
+
+
+        //    // Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    var model = Assert.IsAssignableFrom<IEnumerable<VehicleOverviewViewModel>>(viewResult.Model);
+        //    Assert.NotNull(model);
+        //    Assert.True(model.Any()); // Check that there are vehicles present in the model
+
+
+
+        //}
+        #endregion
         [Fact]
-        public async Task Overview_ReturnsViewResult_WithListOfVehicles()
+        public async Task Overview_ReturnsViewResult_WithCorrectModelType()
         {
             // Arrange
             using var context = CreateDbContext();
-            SeedVehicles(context);
+            //SeedVehicles(context);
             var controller = new VehicleController(context);
 
             // Act
@@ -28,25 +69,8 @@ namespace Garage3.xUnitTests
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<dynamic>>(viewResult.Model); // Adjusted to 'dynamic'
+            var model = Assert.IsAssignableFrom<IEnumerable<VehicleOverviewViewModel>>(viewResult.ViewData.Model);
             Assert.NotNull(model);
-            Assert.True(model.Any()); // Check that there are vehicles present in the model
-        }
-
-
-        // Implement the SeedVehicles method 
-        private void SeedVehicles(ParkingDbContext context)
-        {
-            // Example:
-            context.Vehicles.Add(new Vehicle { VehicleID = 1, OwnerID = 1, RegistrationNumber = "ABC123", Brand = "Toyota", Model = "Corolla", Color = "Blue", NumberOfWheels = 4, VehicleTypeID = 1 });
-            context.Vehicles.Add(new Vehicle { VehicleID = 2, OwnerID = 2, RegistrationNumber = "XYZ789", Brand = "Honda", Model = "Civic", Color = "Red", NumberOfWheels = 4, VehicleTypeID = 1 });
-            context.Vehicles.Add(new Vehicle { VehicleID = 3, OwnerID = 3, RegistrationNumber = "DEF456", Brand = "Ford", Model = "Fiesta", Color = "Green", NumberOfWheels = 4, VehicleTypeID = 1 });
-            context.Vehicles.Add(new Vehicle { VehicleID = 4, OwnerID = 4, RegistrationNumber = "GHI789", Brand = "Volvo", Model = "V70", Color = "Black", NumberOfWheels = 4, VehicleTypeID = 1 });
-            context.Vehicles.Add(new Vehicle { VehicleID = 5, OwnerID = 5, RegistrationNumber = "JKL012", Brand = "Saab", Model = "900", Color = "White", NumberOfWheels = 4, VehicleTypeID = 1 });
-            
-            // Add as many vehicles as needed for your test
-
-            context.SaveChanges();
         }
 
         [Fact]
@@ -85,7 +109,7 @@ namespace Garage3.xUnitTests
         {
             // Arrange
             using var context = CreateDbContext();
-            SeedVehicles(context);
+            //SeedVehicles(context);
             var controller = new VehicleController(context)
             {
                 TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
@@ -109,13 +133,13 @@ namespace Garage3.xUnitTests
         {
             // Arrange
             using var context = CreateDbContext();
-            SeedVehicles(context);
+            //SeedVehicles(context);
             var controller = new VehicleController(context)
             {
                 TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
             };
 
-            var vehicleToDelete = context.Vehicles.First(); // Get the first vehicle to delete
+            var vehicleToDelete = context.Vehicles.LastOrDefault(); // Get the last vehicle to delete
             int vehicleToDeleteId = vehicleToDelete.VehicleID;
 
             // Act
@@ -125,45 +149,76 @@ namespace Garage3.xUnitTests
             var deletedVehicle = context.Vehicles.FirstOrDefault(v => v.VehicleID == vehicleToDeleteId);
             Assert.Null(deletedVehicle);
         }
+        #region Legacy xUnit for Park
+        //[Fact]
+        //public async Task Park_ValidVehicle_CreatesNewParkingRecord()
+        //{
+        //    // Arrange
+        //    // Had to make sure to test the POST method, not the GET method
 
+        //    using var context = CreateDbContext();
+        //    //SeedVehicles(context);
+        //    var controller = new VehicleController(context)
+        //    {
+        //        TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
+        //    };
+
+        //    var vehicleToPark = context.Vehicles.First(); // Get the first vehicle to park
+        //    int vehicleToParkId = vehicleToPark.VehicleID;
+
+        //    var parkingRecord = new ParkingRecord
+        //    {
+        //        VehicleID = vehicleToParkId,
+        //        MemberID = 1, // Assuming a valid MemberID, adjust as necessary
+        //        ParkTime = DateTime.Now
+        //    };
+
+        //    // Act
+        //    var result = await controller.Park(vehicleToParkId, parkingRecord);
+
+        //    // Assert
+        //    var createdParkingRecord = context.ParkingRecords.FirstOrDefault(pr => pr.VehicleID == vehicleToParkId);
+        //    Assert.NotNull(createdParkingRecord);
+        //    Assert.Null(createdParkingRecord.CheckOutTime); // Check that the vehicle is currently parked (no checkout time)
+        //}
+        #endregion
         [Fact]
         public async Task Park_ValidVehicle_CreatesNewParkingRecord()
         {
             // Arrange
-            // Had to make sure to test the POST method, not the GET method
-
             using var context = CreateDbContext();
-            SeedVehicles(context);
             var controller = new VehicleController(context)
             {
                 TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
             };
 
             var vehicleToPark = context.Vehicles.First(); // Get the first vehicle to park
-            int vehicleToParkId = vehicleToPark.VehicleID;
 
-            var parkingRecord = new ParkingRecord
+            var parkViewModel = new ParkViewModel
             {
-                VehicleID = vehicleToParkId,
-                MemberID = 1, // Assuming a valid MemberID, adjust as necessary
+                VehicleId = vehicleToPark.VehicleID,
+                MemberId = 1, // Assuming a valid MemberID, adjust as necessary
                 ParkTime = DateTime.Now
             };
 
             // Act
-            var result = await controller.Park(vehicleToParkId, parkingRecord);
+            var result = await controller.Park(parkViewModel); // Pass the ViewModel instance directly
 
             // Assert
-            var createdParkingRecord = context.ParkingRecords.FirstOrDefault(pr => pr.VehicleID == vehicleToParkId);
+            var createdParkingRecord = context.ParkingRecords.FirstOrDefault(pr => pr.VehicleID == vehicleToPark.VehicleID);
             Assert.NotNull(createdParkingRecord);
+            Assert.Equal(vehicleToPark.VehicleID, createdParkingRecord.VehicleID);
+            Assert.Equal(1, createdParkingRecord.MemberID); // The MemberID should match what was set
             Assert.Null(createdParkingRecord.CheckOutTime); // Check that the vehicle is currently parked (no checkout time)
         }
+
 
         [Fact]
         public async Task UnparkConfirmed_ValidVehicle_UpdatesParkingRecordWithCheckoutTime()
         {
             // Arrange
             using var context = CreateDbContext();
-            SeedVehicles(context);
+            //SeedVehicles(context);
             var controller = new VehicleController(context)
             {
                 TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
