@@ -124,6 +124,12 @@ namespace Garage3.Controllers
                 {
                     _context.Add(member);
                     await _context.SaveChangesAsync();
+
+                    // Create a new account for the member
+                    var account = new Account { MemberID = member.MemberID };
+                    _context.Accounts.Add(account);
+                    await _context.SaveChangesAsync();
+
                     TempData["Message"] = "Member registered successfully!";
                     //return RedirectToAction(nameof(Overview));
                     return RedirectToAction("Index", "Home");
