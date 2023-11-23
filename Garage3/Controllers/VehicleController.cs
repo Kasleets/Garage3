@@ -11,9 +11,48 @@ namespace Garage3.Controllers
     {
         private readonly ParkingDbContext _context;
 
-        public VehicleController(ParkingDbContext context)
+        private readonly GarageSettings _garageSettings;
+
+        public VehicleController(ParkingDbContext context, IOptions<GarageSettings> garageSettings)// Constructor to inject GarageSettings dependency Xiahui
         {
             _context = context;
+            _garageSettings = garageSettings.Value;
+        }
+
+
+        // Action method to generate a parking receipt Xiahui
+        public IActionResult Receipt(int vehicleId, string registrationNumber, DateTime arrivalTime, DateTime departureTime, string vehicleType)
+        {
+            // Fetch cost per hour based on the vehicle type from GarageSettings
+            decimal costPerHour = GetCostPerHourByVehicleType(vehicleType);
+
+            // Create the receipt view model
+            var receiptViewModel = new ReceiptViewModel(vehicleId, registrationNumber, arrivalTime, departureTime, costPerHour);
+
+            // Return the view with the receipt view model
+            return View(receiptViewModel);
+        }
+
+        // Private method to get the cost per hour based on the vehicle type
+        private decimal GetCostPerHourByVehicleType(string vehicleType)
+        {
+            // Retrieve hourly rate based on the specified vehicle type from GarageSettings
+            switch (vehicleType.ToLower())
+            {
+                case "car":
+                    return _garageSettings.CarHourlyRate;
+                case "motorcycle":
+                    return _garageSettings.MotorcycleHourlyRate;
+                case "truck":
+                    return _garageSettings.TruckHourlyRate;
+                case "bus":
+                    return _garageSettings.BusHourlyRate;
+                case "airplane":
+                    return _garageSettings.AirplaneHourlyRate;
+                default:
+                    // Handle unknown vehicle types or set a default rate
+                    return 0;
+            }
         }
 
         // GET: Vehicle/Overview
