@@ -4,6 +4,7 @@ using Garage3.Data;
 using Garage3.Models.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Garage3.ViewModels;
+using Microsoft.Extensions.Options;
 
 namespace Garage3.Controllers
 {

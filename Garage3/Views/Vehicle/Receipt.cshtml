@@ -1,23 +1,34 @@
 ﻿@model ReceiptViewModel
 
-<!-- Display receipt details -->
-<h2>Checkout receipt</h2>
-<div>
-    <dl class="dl-horizontal">
-        <dt>Vehicle ID: </dt>
-        <dd>@Model.VehicleId</dd>
-        <dt>Registration Number: </dt>
-        <dd>@Model.RegistrationNumber</dd>
-        <dt>Arrival Time: </dt>
-        <dd>@Model.ArrivalTime</dd>
-        <dt>Departure Time: </dt>
-        <dd>@Model.DepartureTime</dd>
-        <dt>Parking Time: </dt>
-        <dd>@Model.FormattedParkingTime</dd>
-        <dt>Total Cost: </dt>
-        <dd>@Model.FormattedTotalCost</dd>
-    </dl>
-</div>
+<h2>Receipt</h2>
 
-<button onclick="window.print();" class="btn btn-primary">Print</button>
-<a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Back to Home</a>
+<table class="table">
+    <tr>
+        <th>Vehicle ID</th>
+        <td>@Model.VehicleId</td>
+    </tr>
+    <tr>
+        <th>Registration Number</th>
+        <td>@Model.RegistrationNumber</td>
+    </tr>
+    <tr>
+        <th>Arrival Time</th>
+        <td>@Model.ArrivalTime</td>
+    </tr>
+    <tr>
+        <th>Departure Time</th>
+        <td>@Model.DepartureTime</td>
+    </tr>
+    <tr>
+        <th>Parking Time</th>
+        <td>@Model.ParkingTime</td>
+    </tr>
+    <tr>
+        <th>Cost Per Hour</th>
+        <td>@Model.CostPerHour</td>
+    </tr>
+    <tr>
+        <th>Total Cost</th>
+        <td>@(Model.CostPerHour * (decimal)Model.ParkingTime.TotalHours)</td>
+    </tr>
+</table>
