@@ -149,38 +149,69 @@ namespace Garage3.xUnitTests
             var deletedVehicle = context.Vehicles.FirstOrDefault(v => v.VehicleID == vehicleToDeleteId);
             Assert.Null(deletedVehicle);
         }
+        #region Legacy xUnit for Park
+        //[Fact]
+        //public async Task Park_ValidVehicle_CreatesNewParkingRecord()
+        //{
+        //    // Arrange
+        //    // Had to make sure to test the POST method, not the GET method
 
+        //    using var context = CreateDbContext();
+        //    //SeedVehicles(context);
+        //    var controller = new VehicleController(context)
+        //    {
+        //        TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
+        //    };
+
+        //    var vehicleToPark = context.Vehicles.First(); // Get the first vehicle to park
+        //    int vehicleToParkId = vehicleToPark.VehicleID;
+
+        //    var parkingRecord = new ParkingRecord
+        //    {
+        //        VehicleID = vehicleToParkId,
+        //        MemberID = 1, // Assuming a valid MemberID, adjust as necessary
+        //        ParkTime = DateTime.Now
+        //    };
+
+        //    // Act
+        //    var result = await controller.Park(vehicleToParkId, parkingRecord);
+
+        //    // Assert
+        //    var createdParkingRecord = context.ParkingRecords.FirstOrDefault(pr => pr.VehicleID == vehicleToParkId);
+        //    Assert.NotNull(createdParkingRecord);
+        //    Assert.Null(createdParkingRecord.CheckOutTime); // Check that the vehicle is currently parked (no checkout time)
+        //}
+        #endregion
         [Fact]
         public async Task Park_ValidVehicle_CreatesNewParkingRecord()
         {
             // Arrange
-            // Had to make sure to test the POST method, not the GET method
-
             using var context = CreateDbContext();
-            //SeedVehicles(context);
             var controller = new VehicleController(context)
             {
                 TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
             };
 
             var vehicleToPark = context.Vehicles.First(); // Get the first vehicle to park
-            int vehicleToParkId = vehicleToPark.VehicleID;
 
-            var parkingRecord = new ParkingRecord
+            var parkViewModel = new ParkViewModel
             {
-                VehicleID = vehicleToParkId,
-                MemberID = 1, // Assuming a valid MemberID, adjust as necessary
+                VehicleId = vehicleToPark.VehicleID,
+                MemberId = 1, // Assuming a valid MemberID, adjust as necessary
                 ParkTime = DateTime.Now
             };
 
             // Act
-            var result = await controller.Park(vehicleToParkId, parkingRecord);
+            var result = await controller.Park(parkViewModel); // Pass the ViewModel instance directly
 
             // Assert
-            var createdParkingRecord = context.ParkingRecords.FirstOrDefault(pr => pr.VehicleID == vehicleToParkId);
+            var createdParkingRecord = context.ParkingRecords.FirstOrDefault(pr => pr.VehicleID == vehicleToPark.VehicleID);
             Assert.NotNull(createdParkingRecord);
+            Assert.Equal(vehicleToPark.VehicleID, createdParkingRecord.VehicleID);
+            Assert.Equal(1, createdParkingRecord.MemberID); // The MemberID should match what was set
             Assert.Null(createdParkingRecord.CheckOutTime); // Check that the vehicle is currently parked (no checkout time)
         }
+
 
         [Fact]
         public async Task UnparkConfirmed_ValidVehicle_UpdatesParkingRecordWithCheckoutTime()

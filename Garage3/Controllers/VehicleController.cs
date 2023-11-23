@@ -365,51 +365,132 @@ namespace Garage3.Controllers
         }
 
         // GET: Vehicle/Park/5
+        //public IActionResult Park(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var vehicle = _context.Vehicles.Find(id);
+        //    if (vehicle == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // Note: This should be irrelevant I believe, the vehicle gets a timestamp when parked
+        //    var parkingRecord = new ParkingRecord { VehicleID = vehicle.VehicleID, ParkTime = DateTime.Now };
+        //    return View(parkingRecord);
+        //}
+
+        // GET: Vehicle/Park/5
         public IActionResult Park(int? id)
         {
+            // If no id is provided, prepare the ViewModel with all vehicles and members for selection.
             if (id == null)
             {
-                return NotFound();
+                var vehicles = _context.Vehicles.Select(v => new { v.VehicleID, v.RegistrationNumber }).ToList();
+                var members = _context.Members.Select(m => new { m.MemberID, MemberName = m.FirstName + " " + m.LastName }).ToList();
+
+                var model = new ParkViewModel
+                {
+                    ParkTime = DateTime.Now,
+                    Vehicles = new SelectList(vehicles, "VehicleID", "RegistrationNumber"),
+                    Members = new SelectList(members, "MemberID", "MemberName")
+                };
+
+                return View(model);
             }
 
-            var vehicle = _context.Vehicles.Find(id);
+            // If an id is provided, select the specific vehicle and its owner for parking.
+            var vehicle = _context.Vehicles
+                .Include(v => v.Owner)
+                .SingleOrDefault(v => v.VehicleID == id);
+
             if (vehicle == null)
             {
                 return NotFound();
             }
 
-            var parkingRecord = new ParkingRecord { VehicleID = vehicle.VehicleID, ParkTime = DateTime.Now };
-            return View(parkingRecord);
+            // Assuming the member is the owner of the vehicle, fetch the MemberID from the vehicle's OwnerID
+            var modelById = new ParkViewModel
+            {
+                VehicleId = vehicle.VehicleID,
+                MemberId = vehicle.OwnerID, // OwnerID from Vehicles table is used for MemberID
+                ParkTime = DateTime.Now,
+                // Populate the dropdowns even when a specific vehicle is selected
+                // to allow changing the selection if needed
+                Vehicles = new SelectList(_context.Vehicles, "VehicleID", "RegistrationNumber", vehicle.VehicleID),
+                Members = new SelectList(_context.Members, "MemberID", "FirstName", vehicle.OwnerID) // Include LastName if needed
+            };
+
+            return View(modelById);
         }
+
+
+        // POST: Vehicle/Park/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Park(int id, [Bind("VehicleID,MemberID,ParkTime")] ParkingRecord parkingRecord)
+        //{
+        //    if (id != parkingRecord.VehicleID)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            _context.Add(parkingRecord);
+        //            await _context.SaveChangesAsync();
+        //            TempData["Message"] = "Vehicle parked successfully!";
+        //            return RedirectToAction(nameof(Overview));
+        //        }
+        //    }
+        //    catch (DbUpdateException ex)
+        //    {
+        //        // Log the error
+        //        ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+        //    }
+
+        //    return View(parkingRecord);
+        //}
 
         // POST: Vehicle/Park/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Park(int id, [Bind("VehicleID,MemberID,ParkTime")] ParkingRecord parkingRecord)
+        public async Task<IActionResult> Park(ParkViewModel model)
         {
-            if (id != parkingRecord.VehicleID)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return View(model);
             }
+
+            var parkingRecord = new ParkingRecord
+            {
+                VehicleID = model.VehicleId,
+                MemberID = model.MemberId, // Use MemberId from the ViewModel
+                ParkTime = model.ParkTime
+            };
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(parkingRecord);
-                    await _context.SaveChangesAsync();
-                    TempData["Message"] = "Vehicle parked successfully!";
-                    return RedirectToAction(nameof(Overview));
-                }
+                _context.ParkingRecords.Add(parkingRecord);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Vehicle parked successfully!";
+                return RedirectToAction(nameof(Overview)); // Make sure the 'Overview' action exists
             }
             catch (DbUpdateException ex)
             {
-                // Log the error
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                // Log the error (consider using a logging framework)
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists, see your system administrator.");
+                return View(model);
             }
-
-            return View(parkingRecord);
         }
+
+
 
         // GET: Vehicle/Unpark/5
         public async Task<IActionResult> Unpark(int? id)
