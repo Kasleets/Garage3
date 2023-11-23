@@ -109,6 +109,14 @@ namespace Garage3.Data
                 new Vehicle { VehicleID = 6, OwnerID = 6, RegistrationNumber = "MNO345", Brand = "Volkswagen", Model = "Golf", Color = "Silver", NumberOfWheels = 4, VehicleTypeID = 1 }
                 );
 
+            modelBuilder.Entity<ParkingRecord>().HasData(
+                new ParkingRecord { ParkingRecordID = 1, VehicleID = 1, MemberID = 1, ParkTime = DateTime.Now.AddHours(-3), CheckOutTime = null }, // Vehicle 1 is parked
+                new ParkingRecord { ParkingRecordID = 2, VehicleID = 2, MemberID = 2, ParkTime = DateTime.Now.AddHours(-1), CheckOutTime = null },  // Vehicle 2 is parked
+                new ParkingRecord { ParkingRecordID = 3, VehicleID = 3, MemberID = 3, ParkTime = DateTime.Now.AddHours(-49), CheckOutTime = null }  // Vehicle 3 is parked
+                
+                // Add more records as needed
+                );
+
             // Seed Data for Accounts
             modelBuilder.Entity<Account>().HasData(
                 new Account { AccountID = 1, MemberID = 1 },

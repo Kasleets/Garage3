@@ -1,5 +1,6 @@
 ﻿namespace Garage3.Models.Entities
 {
+#nullable disable
     public class ParkingRecord
     {
         public int ParkingRecordID { get; set; }
